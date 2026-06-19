@@ -332,15 +332,23 @@ export function StandardsWallStage() {
         data-lenis-prevent={placementMode ? "true" : undefined}
         className="standards-wall-stage relative mx-auto aspect-[4/3] w-full max-w-[1024px] overflow-hidden"
       >
-        <div className="pointer-events-none absolute inset-0 z-0">
-          <Image
-            src={images.standardsWall}
-            alt=""
-            fill
-            sizes="(max-width: 1024px) 100vw, 1024px"
-            className="object-fill select-none"
-            draggable={false}
-          />
+        <div
+          className="pointer-events-none absolute inset-0 z-0 will-change-transform"
+          data-standards-wall-parallax
+        >
+          <div
+            className="absolute inset-0 will-change-[opacity,transform]"
+            data-standards-wall
+          >
+            <Image
+              src={images.standardsWall}
+              alt=""
+              fill
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              className="object-fill select-none"
+              draggable={false}
+            />
+          </div>
         </div>
 
         <div className="pointer-events-none absolute inset-0 z-[2]">
@@ -352,7 +360,7 @@ export function StandardsWallStage() {
             const href = "href" in pillar ? pillar.href : undefined;
             const isLink = !placementMode && Boolean(href);
 
-            const positionStyle = {
+            const layerStyle = {
               left: `${hotspot.centerX}%`,
               top: `${hotspot.centerY}%`,
               width: `${hotspot.width}%`,
@@ -364,10 +372,10 @@ export function StandardsWallStage() {
             const isInteractive = !placementMode;
 
             const factClassName = isInteractive
-              ? `standards-wall-fact standards-wall-fact--interactive absolute pointer-events-auto${
+              ? `standards-wall-fact standards-wall-fact--interactive block h-full w-full pointer-events-auto${
                   isLink ? " standards-wall-fact--link cursor-pointer" : ""
                 }`
-              : `standards-wall-fact absolute select-none ${
+              : `standards-wall-fact block h-full w-full select-none ${
                   isActive
                     ? "outline outline-2 outline-red-500"
                     : "outline outline-2 outline-dashed outline-red-500/70"
@@ -395,48 +403,59 @@ export function StandardsWallStage() {
               </div>
             );
 
+            const layerProps = {
+              className: "absolute will-change-transform",
+              style: layerStyle,
+              "data-standards-fact-parallax": true,
+              "data-fact-depth": hotspot.centerY,
+            } as const;
+
             if (isLink && href) {
               return (
-                <Link
-                  key={pillar.label}
-                  href={href}
-                  aria-label="View COA library"
-                  className={factClassName}
-                  style={positionStyle}
-                >
-                  {factContent}
-                </Link>
+                <div key={pillar.label} {...layerProps}>
+                  <Link
+                    href={href}
+                    aria-label="View COA library"
+                    className={factClassName}
+                    data-standards-fact
+                    data-fact-depth={hotspot.centerY}
+                  >
+                    {factContent}
+                  </Link>
+                </div>
               );
             }
 
             return (
-              <div
-                key={pillar.label}
-                className={factClassName}
-                style={positionStyle}
-                onMouseDown={
-                  placementMode
-                    ? (event) => {
-                        event.preventDefault();
-                        document.body.style.overflow = "hidden";
-                        document.documentElement.setAttribute(
-                          "data-standards-placement-drag",
-                          "true",
-                        );
-                        dragRef.current = {
-                          index,
-                          startX: event.clientX,
-                          startY: event.clientY,
-                          originX: hotspot.centerX,
-                          originY: hotspot.centerY,
-                        };
-                        setActiveIndex(index);
-                        setDraggingIndex(index);
-                      }
-                    : undefined
-                }
-              >
-                {factContent}
+              <div key={pillar.label} {...layerProps}>
+                <div
+                  className={factClassName}
+                  data-standards-fact={placementMode ? undefined : true}
+                  data-fact-depth={hotspot.centerY}
+                  onMouseDown={
+                    placementMode
+                      ? (event) => {
+                          event.preventDefault();
+                          document.body.style.overflow = "hidden";
+                          document.documentElement.setAttribute(
+                            "data-standards-placement-drag",
+                            "true",
+                          );
+                          dragRef.current = {
+                            index,
+                            startX: event.clientX,
+                            startY: event.clientY,
+                            originX: hotspot.centerX,
+                            originY: hotspot.centerY,
+                          };
+                          setActiveIndex(index);
+                          setDraggingIndex(index);
+                        }
+                      : undefined
+                  }
+                >
+                  {factContent}
+                </div>
               </div>
             );
           })}

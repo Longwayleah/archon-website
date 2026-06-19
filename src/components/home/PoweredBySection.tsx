@@ -2,43 +2,152 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { gsap, useGSAP } from "@/lib/gsap/register";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap/register";
 import { homepageCopy } from "@/config/homepage";
 import { images } from "@/config/assets";
+import { motion as motionTokens } from "@/config/design";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useMotionSafe } from "@/hooks/useMotionSafe";
 import { useInViewport } from "@/hooks/useInViewport";
 
+function resetPoweredReveal(section: HTMLElement) {
+  const words = section.querySelectorAll("[data-powered-word]");
+  const lines = section.querySelectorAll("[data-powered-line]");
+
+  gsap.set(words, { y: "110%", opacity: 0 });
+  gsap.set(lines, { y: 18, opacity: 0 });
+}
+
 export function PoweredBySection() {
   const sectionRef = useRef<HTMLElement>(null);
   const meshStageRef = useRef<HTMLDivElement>(null);
   const waveFlowRef = useRef<HTMLDivElement>(null);
-  const waveTweenRef = useRef<gsap.core.Tween | null>(null);
+  const floatTweensRef = useRef<gsap.core.Tween[]>([]);
   const reduced = usePrefersReducedMotion();
   const motionSafe = useMotionSafe();
   const inView = useInViewport(meshStageRef);
   const { poweredBy } = homepageCopy;
+  const headlineWords = poweredBy.headline.split(" ");
 
   useGSAP(
     () => {
       if (reduced || !sectionRef.current) return;
 
-      const els = sectionRef.current.querySelectorAll("[data-powered-enter]");
-      gsap.from(els, {
-        y: 36,
-        opacity: 0,
-        immediateRender: false,
-        duration: 1.1,
-        stagger: 0.14,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 65%",
-        },
+      const section = sectionRef.current;
+      const words = section.querySelectorAll("[data-powered-word]");
+      const lines = section.querySelectorAll("[data-powered-line]");
+
+      if (!words.length && !lines.length) return;
+
+      resetPoweredReveal(section);
+
+      const reveal = gsap
+        .timeline({ paused: true })
+        .to(words, {
+          y: 0,
+          opacity: 1,
+          duration: 0.95,
+          stagger: 0.07,
+          ease: "power3.out",
+        })
+        .to(
+          lines,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.88,
+            stagger: 0.16,
+            ease: "power3.out",
+          },
+          "-=0.35",
+        );
+
+      const playReveal = () => reveal.restart(true);
+
+      const revealTrigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top 78%",
+        end: "bottom 22%",
+        onEnter: playReveal,
+        onEnterBack: playReveal,
+        onLeave: () => resetPoweredReveal(section),
+        onLeaveBack: () => resetPoweredReveal(section),
       });
+
+      if (revealTrigger.isActive) {
+        playReveal();
+      }
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+
+      return () => {
+        revealTrigger.kill();
+        reveal.kill();
+      };
     },
     { scope: sectionRef, dependencies: [reduced] },
+  );
+
+  useGSAP(
+    () => {
+      if (reduced || !motionSafe || !sectionRef.current) return;
+
+      const section = sectionRef.current;
+      const headline = section.querySelector('[data-powered-parallax="headline"]');
+      const body = section.querySelector('[data-powered-parallax="body"]');
+
+      const parallaxBase = {
+        trigger: section,
+        start: "top bottom",
+        end: "bottom top",
+      };
+
+      const triggers: ScrollTrigger[] = [];
+
+      if (headline) {
+        const headlineParallax = gsap.fromTo(
+          headline,
+          { y: 28 },
+          {
+            y: -28,
+            ease: "none",
+            scrollTrigger: {
+              ...parallaxBase,
+              scrub: motionTokens.scrollTrigger.scrub,
+            },
+          },
+        );
+        if (headlineParallax.scrollTrigger) {
+          triggers.push(headlineParallax.scrollTrigger);
+        }
+      }
+
+      if (body) {
+        const bodyParallax = gsap.fromTo(
+          body,
+          { y: 16 },
+          {
+            y: -44,
+            ease: "none",
+            scrollTrigger: {
+              ...parallaxBase,
+              scrub: 1.05,
+            },
+          },
+        );
+        if (bodyParallax.scrollTrigger) {
+          triggers.push(bodyParallax.scrollTrigger);
+        }
+      }
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+
+      return () => {
+        triggers.forEach((trigger) => trigger.kill());
+      };
+    },
+    { scope: sectionRef, dependencies: [reduced, motionSafe] },
   );
 
   useGSAP(
@@ -52,48 +161,54 @@ export function PoweredBySection() {
         x: 0,
         y: 0,
         rotation: 0,
-        skewY: 0,
-        scaleY: 1,
+        scale: 1,
       });
 
-      waveTweenRef.current = gsap.to(
-        {},
-        {
-          duration: 10,
-          repeat: -1,
-          ease: "none",
-          paused: true,
-          onUpdate() {
-            const t = this.progress() * Math.PI * 2;
-            const wave = Math.sin(t);
-            const drift = Math.cos(t * 0.85);
+      const floatConfig = {
+        ease: "sine.inOut" as const,
+        yoyo: true,
+        repeat: -1,
+        paused: true,
+      };
 
-            gsap.set(mesh, {
-              x: drift * 14,
-              y: wave * 28,
-              rotation: wave * 1.4,
-              skewY: wave * 2.8,
-              scaleY: 1 + wave * 0.035,
-              scaleX: 1 + drift * 0.015,
-            });
-          },
-        },
-      );
+      floatTweensRef.current = [
+        gsap.to(mesh, { y: 30, duration: 11, ...floatConfig }),
+        gsap.to(mesh, { x: 17, duration: 14, ...floatConfig }),
+        gsap.to(mesh, { rotation: 1.3, duration: 16, ...floatConfig }),
+        gsap.to(mesh, { scale: 1.04, duration: 12, ...floatConfig }),
+      ];
 
       return () => {
-        waveTweenRef.current?.kill();
-        waveTweenRef.current = null;
+        floatTweensRef.current.forEach((tween) => tween.kill());
+        floatTweensRef.current = [];
       };
     },
     { scope: sectionRef, dependencies: [reduced, motionSafe] },
   );
 
   useEffect(() => {
-    const wave = waveTweenRef.current;
-    if (!wave || reduced || !motionSafe) return;
+    const tweens = floatTweensRef.current;
+    if (!tweens.length || reduced || !motionSafe) return;
 
-    if (inView) wave.play();
-    else wave.pause();
+    tweens.forEach((tween) => {
+      if (inView) {
+        tween.play();
+        gsap.to(tween, {
+          timeScale: 1,
+          duration: 1.4,
+          ease: "sine.inOut",
+          overwrite: true,
+        });
+      } else {
+        gsap.to(tween, {
+          timeScale: 0,
+          duration: 1.4,
+          ease: "sine.inOut",
+          overwrite: true,
+          onComplete: () => tween.pause(),
+        });
+      }
+    });
   }, [inView, reduced, motionSafe]);
 
   return (
@@ -110,7 +225,7 @@ export function PoweredBySection() {
         <div className="absolute inset-0 origin-[62%_48%] rotate-[-6deg] scale-[1.12] md:rotate-[-8deg] md:scale-[1.2]">
           <div
             ref={waveFlowRef}
-            className="absolute -inset-[12%] will-change-transform"
+            className="absolute -inset-[12%] [backface-visibility:hidden] will-change-transform"
           >
             <Image
               src={images.poweredByMolecule}
@@ -137,16 +252,29 @@ export function PoweredBySection() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1600px] items-center px-6 py-24 md:px-10 md:py-28 lg:px-16 lg:py-32">
         <div className="flex max-w-[min(88vw,40rem)] flex-col justify-center gap-8 md:gap-10">
           <h2
-            data-powered-enter
-            className="font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-archon-navy"
+            data-powered-parallax="headline"
+            className="font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-archon-navy will-change-transform"
           >
-            {poweredBy.headline}
+            {reduced
+              ? poweredBy.headline
+              : headlineWords.map((word, index) => (
+                  <span
+                    key={`${word}-${index}`}
+                    className="inline-block overflow-hidden align-bottom"
+                  >
+                    <span data-powered-word className="inline-block">
+                      {word}
+                      {index < headlineWords.length - 1 ? "\u00A0" : ""}
+                    </span>
+                  </span>
+                ))}
           </h2>
 
-          <div data-powered-enter className="space-y-2">
+          <div data-powered-parallax="body" className="space-y-2 will-change-transform">
             {poweredBy.body.map((line) => (
               <p
                 key={line}
+                data-powered-line
                 className="font-display text-[clamp(1rem,2.4vw,1.35rem)] font-semibold uppercase leading-[1.15] tracking-[0.04em] text-archon-navy"
               >
                 {line}

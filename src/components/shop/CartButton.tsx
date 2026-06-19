@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils/cn";
 
 type CartButtonProps = {
   className?: string;
+  onDark?: boolean;
 };
 
-export function CartButton({ className }: CartButtonProps) {
+export function CartButton({ className, onDark = false }: CartButtonProps) {
   const items = useCartStore((state) => state.items);
   const openCart = useCartStore((state) => state.openCart);
   const itemCount = getCartItemCount(items);
@@ -15,35 +16,32 @@ export function CartButton({ className }: CartButtonProps) {
   return (
     <button
       type="button"
-      aria-label={`Open cart${itemCount ? `, ${itemCount} items` : ""}`}
+      aria-label={`Open protocol${itemCount ? `, ${itemCount} items` : ""}`}
       className={cn(
-        "relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-archon-black/15 text-archon-black transition-colors hover:border-archon-black/30",
+        "group inline-flex items-baseline gap-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors md:text-[9px] lg:text-[10px]",
+        onDark
+          ? "text-white/65 hover:text-white"
+          : "text-archon-black/70 hover:text-archon-black",
         className,
       )}
       onClick={openCart}
     >
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
-        <path
-          d="M4.25 4.5H15.25L14 12.25H6.25L4.25 4.5Z"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M4.25 4.5L3.5 2.5H2"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
-        <circle cx="7.25" cy="14.75" r="1" fill="currentColor" />
-        <circle cx="13.25" cy="14.75" r="1" fill="currentColor" />
-      </svg>
-
-      {itemCount > 0 ? (
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-archon-navy px-1 font-body text-[10px] font-semibold text-white">
-          {itemCount}
-        </span>
-      ) : null}
+      <span>Protocol</span>
+      <span
+        className={cn(
+          "tabular-nums tracking-[0.08em] transition-colors",
+          itemCount > 0
+            ? onDark
+              ? "text-white"
+              : "text-archon-navy"
+            : onDark
+              ? "text-white/35"
+              : "text-archon-black/30",
+        )}
+        aria-hidden={itemCount === 0}
+      >
+        {String(itemCount).padStart(2, "0")}
+      </span>
     </button>
   );
 }

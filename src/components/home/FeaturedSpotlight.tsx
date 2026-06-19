@@ -18,11 +18,31 @@ const CROSSFADE_DURATION = 1.15;
 const COPY_DURATION = 0.85;
 
 const featuredItems = featuredProducts.slice(0, FEATURED_COUNT);
+const headlineWords = homepageCopy.featured.headline.split(" ");
+
+function resetFeaturedReveal(section: HTMLElement) {
+  const eyebrow = section.querySelector("[data-featured-eyebrow]");
+  const words = section.querySelectorAll("[data-featured-word]");
+  const link = section.querySelector("[data-featured-link]");
+  const slides = section.querySelector("[data-featured-slides-wrap]");
+  const copy = section.querySelector("[data-featured-copy]");
+  const dots = section.querySelector("[data-featured-dots]");
+  const bg = section.querySelector("[data-featured-bg]");
+
+  if (eyebrow) gsap.set(eyebrow, { autoAlpha: 0, y: 20 });
+  gsap.set(words, { y: "110%", autoAlpha: 0 });
+  if (link) gsap.set(link, { autoAlpha: 0, y: 16 });
+  if (slides) gsap.set(slides, { autoAlpha: 0, y: 52, scale: 0.94 });
+  if (copy) gsap.set(copy, { autoAlpha: 0, y: 28 });
+  if (dots) gsap.set(dots, { autoAlpha: 0, y: 12 });
+  if (bg) gsap.set(bg, { scale: 1.1, y: "-6%" });
+}
 
 export function FeaturedSpotlight() {
   const sectionRef = useRef<HTMLElement>(null);
   const slidesRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
   const splashComplete = useAppStore((s) => s.splashComplete);
   const { featured } = homepageCopy;
@@ -48,34 +68,98 @@ export function FeaturedSpotlight() {
     () => {
       if (reduced || !splashComplete || !sectionRef.current) return;
 
-      const enterEls = sectionRef.current.querySelectorAll("[data-featured-enter]");
-      if (!enterEls.length) return;
+      const section = sectionRef.current;
+      const eyebrow = section.querySelector("[data-featured-eyebrow]");
+      const words = section.querySelectorAll("[data-featured-word]");
+      const link = section.querySelector("[data-featured-link]");
+      const slides = section.querySelector("[data-featured-slides-wrap]");
+      const slidesInner = section.querySelector("[data-featured-slides]");
+      const copy = section.querySelector("[data-featured-copy]");
+      const dots = section.querySelector("[data-featured-dots]");
+      const bg = section.querySelector("[data-featured-bg]");
 
-      gsap.set(enterEls, { autoAlpha: 0, y: 28 });
+      if (!eyebrow && !words.length) return;
 
-      const stage = sectionRef.current.querySelector("[data-featured-slides]");
-      if (stage) {
-        gsap.set(stage, { y: 44, scale: 0.97 });
+      resetFeaturedReveal(section);
+
+      const reveal = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top 38%",
+            scrub: 0.72,
+          },
+        })
+        .to(eyebrow, { autoAlpha: 1, y: 0, ease: "power2.out" }, 0)
+        .to(
+          words,
+          {
+            y: 0,
+            autoAlpha: 1,
+            stagger: 0.12,
+            ease: "power3.out",
+          },
+          0.08,
+        )
+        .to(link, { autoAlpha: 1, y: 0, ease: "power2.out" }, 0.22)
+        .to(
+          slides,
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            ease: "power3.out",
+          },
+          0.18,
+        )
+        .to(copy, { autoAlpha: 1, y: 0, ease: "power2.out" }, 0.42)
+        .to(dots, { autoAlpha: 1, y: 0, ease: "power2.out" }, 0.52);
+
+      const parallaxConfig = {
+        trigger: section,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 0.85,
+      };
+
+      const triggers: ScrollTrigger[] = [];
+      if (reveal.scrollTrigger) triggers.push(reveal.scrollTrigger);
+
+      if (bg) {
+        const bgParallax = gsap.fromTo(
+          bg,
+          { y: "-6%", scale: 1.1 },
+          {
+            y: "6%",
+            scale: 1.02,
+            ease: "none",
+            scrollTrigger: parallaxConfig,
+          },
+        );
+        if (bgParallax.scrollTrigger) triggers.push(bgParallax.scrollTrigger);
       }
 
-      const reveal = gsap.to(enterEls, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.9,
-        stagger: 0.13,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 82%",
-          once: true,
-        },
-      });
+      if (slidesInner) {
+        const slideParallax = gsap.fromTo(
+          slidesInner,
+          { y: 24 },
+          {
+            y: -24,
+            ease: "none",
+            scrollTrigger: {
+              ...parallaxConfig,
+              scrub: 1.1,
+            },
+          },
+        );
+        if (slideParallax.scrollTrigger) triggers.push(slideParallax.scrollTrigger);
+      }
 
       requestAnimationFrame(() => ScrollTrigger.refresh());
 
       return () => {
-        reveal.scrollTrigger?.kill();
+        triggers.forEach((trigger) => trigger.kill());
         reveal.kill();
       };
     },
@@ -125,7 +209,12 @@ export function FeaturedSpotlight() {
       ref={sectionRef}
       className="relative h-[100svh] overflow-hidden border-t border-archon-navy/10 bg-white text-archon-navy"
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
+      <div
+        ref={bgRef}
+        data-featured-bg
+        className="pointer-events-none absolute inset-0 will-change-transform"
+        aria-hidden
+      >
         <Image
           src={images.featuredProtocolBackground}
           alt=""
@@ -143,20 +232,29 @@ export function FeaturedSpotlight() {
         >
           <div>
             <p
-              data-featured-enter
+              data-featured-eyebrow
               className="font-body text-[11px] uppercase tracking-[0.32em] text-archon-navy/50"
             >
               {featured.eyebrow}
             </p>
-            <h2
-              data-featured-enter
-              className="mt-2 max-w-[16ch] font-display text-[clamp(1.75rem,2.8vw,2.35rem)] font-medium leading-[1.08] tracking-[-0.01em] text-archon-navy"
-            >
-              {featured.headline}
+            <h2 className="mt-2 max-w-[16ch] font-display text-[clamp(1.75rem,2.8vw,2.35rem)] font-medium leading-[1.08] tracking-[-0.01em] text-archon-navy">
+              {reduced
+                ? featured.headline
+                : headlineWords.map((word, index) => (
+                    <span
+                      key={`${word}-${index}`}
+                      className="inline-block overflow-hidden align-bottom"
+                    >
+                      <span data-featured-word className="inline-block">
+                        {word}
+                        {index < headlineWords.length - 1 ? "\u00A0" : ""}
+                      </span>
+                    </span>
+                  ))}
             </h2>
           </div>
           <Link
-            data-featured-enter
+            data-featured-link
             href={featured.viewAllHref}
             className="group inline-flex items-center gap-2 font-body text-[11px] uppercase tracking-[0.18em] text-archon-navy/70 transition-colors hover:text-archon-navy"
           >
@@ -190,8 +288,11 @@ export function FeaturedSpotlight() {
             className="flex w-full max-w-4xl flex-col items-center max-md:-translate-y-2 md:-translate-y-1"
           >
             <div
+              data-featured-slides-wrap
+              className="w-full will-change-transform"
+            >
+            <div
               ref={slidesRef}
-              data-featured-enter
               data-featured-slides
               className="relative mx-auto aspect-[4/5] h-[min(56svh,640px)] w-auto max-w-[min(94vw,640px)] max-md:-translate-y-1 md:h-[min(50svh,620px)] md:max-w-[680px] lg:h-[min(48svh,660px)] lg:max-w-[720px]"
               role="region"
@@ -224,10 +325,11 @@ export function FeaturedSpotlight() {
                 </Link>
               ))}
             </div>
+            </div>
 
             <div
               ref={copyRef}
-              data-featured-enter
+              data-featured-copy
               className="-mt-20 w-full px-4 text-center md:mt-2 lg:mt-4"
               aria-live="polite"
             >
@@ -253,7 +355,7 @@ export function FeaturedSpotlight() {
             </div>
 
             <div
-              data-featured-enter
+              data-featured-dots
               className="mt-2 flex items-center justify-center gap-2 md:mt-3"
             >
               {featuredItems.map((product, index) => (

@@ -16,38 +16,38 @@ type HeroParallaxLayer = {
 const HERO_PARALLAX_LAYERS: HeroParallaxLayer[] = [
   {
     selector: '[data-hero-parallax="background"]',
-    to: { y: "10%" },
-    scrub: 0.55,
+    to: { y: "22%" },
+    scrub: 0.5,
   },
   {
     selector: '[data-hero-parallax="vial"]',
-    to: { y: 56, scale: 0.96 },
-    scrub: 0.85,
+    to: { y: 100, scale: 0.9 },
+    scrub: 0.9,
   },
   {
     selector: '[data-hero-parallax="wordmark"]',
-    to: { y: 96, opacity: 0.3 },
-    scrub: 1,
+    to: { y: 180, opacity: 0.12 },
+    scrub: 1.05,
   },
   {
     selector: '[data-hero-parallax="headline"]',
-    to: { y: 72, opacity: 0 },
-    scrub: 0.95,
+    to: { y: 128, opacity: 0 },
+    scrub: 1,
   },
   {
     selector: '[data-hero-parallax="copy"]',
-    to: { y: 44, opacity: 0.12 },
-    scrub: 0.75,
+    to: { y: 80, opacity: 0 },
+    scrub: 0.8,
   },
   {
     selector: '[data-hero-parallax="logo"]',
-    to: { y: -40 },
-    scrub: 1.1,
+    to: { y: -72 },
+    scrub: 1.15,
   },
   {
     selector: '[data-hero-parallax="scroll"]',
-    to: { y: 16, opacity: 0 },
-    scrub: 0.85,
+    to: { y: 36, opacity: 0 },
+    scrub: 0.9,
   },
 ];
 

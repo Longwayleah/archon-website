@@ -3,7 +3,7 @@ import { homepageCopy } from "@/config/homepage";
 import { cn } from "@/lib/utils/cn";
 
 type HeroTopWordmarkProps = {
-  variant?: "hero" | "splash";
+  variant?: "hero" | "splash" | "cta";
   wordmarkRef?: RefObject<HTMLSpanElement | null>;
   className?: string;
   splitLetters?: boolean;
@@ -43,6 +43,24 @@ export function HeroTopWordmark({
       >
         {wordmark}
       </p>
+    );
+  }
+
+  if (variant === "cta") {
+    return (
+      <div
+        className={cn(
+          "final-cta-wordmark-wrap pointer-events-none absolute inset-0 z-[0] flex select-none items-center justify-center px-5 md:px-10 lg:px-14",
+          className,
+        )}
+        aria-hidden
+      >
+        <div data-final-cta-wordmark className="final-cta-wordmark-stage">
+          <span className="hero-top-wordmark relative font-display font-extrabold uppercase">
+            {brand.toUpperCase()}
+          </span>
+        </div>
+      </div>
     );
   }
 

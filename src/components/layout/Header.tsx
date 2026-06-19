@@ -1,20 +1,151 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 import { CartButton } from "@/components/shop/CartButton";
 import { navigation, siteConfig } from "@/config/site";
 import { useAppStore } from "@/store/useAppStore";
 import { useScrollStore } from "@/store/useScrollStore";
 
+/** Fully visible through this fraction of hero scroll */
+const HOME_HEADER_HOLD_RATIO = 0.58;
+/** Fade-out spans this additional fraction of hero height */
+const HOME_HEADER_FADE_RATIO = 0.34;
+
+function clamp01(value: number) {
+  return Math.min(1, Math.max(0, value));
+}
+
+function easeOutExpo(value: number) {
+  return value >= 1 ? 1 : 1 - Math.pow(2, -10 * value);
+}
+
+function easeOutQuint(value: number) {
+  return 1 - Math.pow(1 - value, 5);
+}
+
+function easeOutQuart(value: number) {
+  return 1 - Math.pow(1 - value, 4);
+}
+
+function smoothstep(value: number) {
+  return value * value * (3 - 2 * value);
+}
+
+function easeInOutQuart(value: number) {
+  return value < 0.5
+    ? 8 * value * value * value * value
+    : 1 - Math.pow(-2 * value + 2, 4) / 2;
+}
+
+function getHomeHeaderMotion(
+  scrollY: number,
+  hideStart: number,
+  hideEnd: number,
+  direction: "up" | "down" | null,
+) {
+  const fadeSpan = Math.max(hideEnd - hideStart, 1);
+  const isRevealing = direction === "up";
+
+  const motionStart = isRevealing ? hideStart - fadeSpan * 0.24 : hideStart;
+  const motionSpan = isRevealing ? fadeSpan * 1.48 : fadeSpan;
+  const raw = clamp01((scrollY - motionStart) / motionSpan);
+
+  if (isRevealing) {
+    const slideFade = smoothstep(clamp01((raw - 0.04) / 0.96));
+    const opacityFade = smoothstep(clamp01((raw - 0.16) / 0.84));
+    const scaleFade = smoothstep(clamp01((raw - 0.22) / 0.78));
+
+    return {
+      raw,
+      opacity: 1 - easeInOutQuart(opacityFade),
+      translateY: easeOutExpo(slideFade) * 64,
+      scale: 1 - easeOutQuint(scaleFade) * 0.006,
+    };
+  }
+
+  const opacityFade = smoothstep(clamp01((raw - 0.08) / 0.92));
+  const slideFade = smoothstep(clamp01((raw - 0.2) / 0.8));
+  const scaleFade = smoothstep(clamp01((raw - 0.26) / 0.74));
+
+  return {
+    raw,
+    opacity: 1 - easeOutQuart(opacityFade),
+    translateY: easeOutExpo(slideFade) * 68,
+    scale: 1 - easeOutQuint(scaleFade) * 0.008,
+  };
+}
+
+function getHomeHeaderMetrics() {
+  const hero = document.querySelector("main section:first-child");
+  const heroHeight = hero ? (hero as HTMLElement).offsetHeight : window.innerHeight;
+  const hideStart = Math.max(180, Math.round(heroHeight * HOME_HEADER_HOLD_RATIO));
+  const hideEnd = Math.max(
+    hideStart + 200,
+    Math.round(heroHeight * (HOME_HEADER_HOLD_RATIO + HOME_HEADER_FADE_RATIO)),
+  );
+
+  return { hideEnd, hideStart };
+}
+
 export function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const isMenuOpen = useAppStore((s) => s.isMenuOpen);
   const toggleMenu = useAppStore((s) => s.toggleMenu);
   const setMenuOpen = useAppStore((s) => s.setMenuOpen);
   const scrollY = useScrollStore((s) => s.scrollY);
+  const scrollDirection = useScrollStore((s) => s.direction);
+  const setScroll = useScrollStore((s) => s.setScroll);
+  const lastScrollDirection = useRef<"up" | "down" | null>(null);
+  const [homeHeaderMetrics, setHomeHeaderMetrics] = useState({
+    hideEnd: 780,
+    hideStart: 520,
+  });
+
+  useEffect(() => {
+    if (scrollDirection) {
+      lastScrollDirection.current = scrollDirection;
+    }
+  }, [scrollDirection]);
+
+  const headerMotionDirection = scrollDirection ?? lastScrollDirection.current;
+  const isRevealingHeader = headerMotionDirection === "up";
+
   const scrolled = scrollY > 50;
-  const onHero = scrollY <= 50;
+  const homeMotion =
+    isHomePage && !isMenuOpen
+      ? getHomeHeaderMotion(
+          scrollY,
+          homeHeaderMetrics.hideStart,
+          homeHeaderMetrics.hideEnd,
+          headerMotionDirection,
+        )
+      : { raw: 0, opacity: 1, translateY: 0, scale: 1 };
+  const homeHeaderInteractive =
+    !isHomePage || isMenuOpen || homeMotion.opacity > 0.04;
+  const navyReveal = easeOutQuint(
+    clamp01((scrollY - 20) / (isRevealingHeader ? 168 : 128)),
+  );
+  const navyExit = 1 - easeOutQuart(smoothstep(clamp01(homeMotion.raw / 0.78)));
+  const navyStrength =
+    isHomePage && !isMenuOpen ? navyReveal * navyExit : 0;
+  const useNavyBar = navyStrength > 0.32;
+
+  useEffect(() => {
+    setScroll({ scrollY: 0, velocity: 0, direction: null, progress: 0 });
+  }, [pathname, setScroll]);
+
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const updateHideOffset = () => setHomeHeaderMetrics(getHomeHeaderMetrics());
+    updateHideOffset();
+    window.addEventListener("resize", updateHideOffset, { passive: true });
+    return () => window.removeEventListener("resize", updateHideOffset);
+  }, [isHomePage, pathname]);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -23,22 +154,61 @@ export function Header() {
     };
   }, [isMenuOpen]);
 
+  const showSolidBar =
+    isHomePage ? navyStrength > 0.04 || homeMotion.raw > 0 : isMenuOpen || scrolled;
+  const navyBarOpacity = navyStrength;
+
+  const homeHeaderTransition = isRevealingHeader
+    ? "transform 560ms cubic-bezier(0.16, 1, 0.3, 1), opacity 720ms cubic-bezier(0.22, 1, 0.36, 1)"
+    : "transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms cubic-bezier(0.16, 1, 0.3, 1)";
+
+  const homeHeaderStyle =
+    isHomePage && !isMenuOpen
+      ? {
+          transform: `translate3d(0, ${-homeMotion.translateY}%, 0) scale(${homeMotion.scale})`,
+          opacity: homeMotion.opacity,
+          transition: homeHeaderTransition,
+        }
+      : undefined;
+
   return (
     <header
+      style={homeHeaderStyle}
       className={cn(
-        "fixed inset-x-0 top-0 z-50",
-        onHero && !isMenuOpen && !scrolled
-          ? "bg-transparent"
-          : scrolled
-            ? "border-b border-black/5 bg-white/90 backdrop-blur-sm"
-            : "bg-transparent",
+        "fixed inset-x-0 top-0 z-50 will-change-[transform,opacity]",
+        !isHomePage &&
+          "transition-[background-color,border-color] duration-500 ease-out",
+        !homeHeaderInteractive && "pointer-events-none",
+        isHomePage
+          ? cn(
+              "border-b backdrop-blur-sm transition-[border-color,background-color] duration-[900ms] ease-out",
+              navyBarOpacity > 0.04
+                ? "border-white/10"
+                : "border-transparent bg-transparent",
+            )
+          : !showSolidBar
+            ? "bg-transparent"
+            : "border-b border-black/5 bg-white/90 backdrop-blur-sm transition-[background-color,border-color] duration-500 ease-out",
       )}
     >
-      <div className="relative mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-6 md:px-10 lg:px-16">
+      {isHomePage && navyBarOpacity > 0.04 ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-archon-navy/95"
+          style={{
+            opacity: navyBarOpacity,
+            transition: isRevealingHeader
+              ? "opacity 680ms cubic-bezier(0.22, 1, 0.36, 1)"
+              : "opacity 360ms cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        />
+      ) : null}
+      <div className="relative z-[1] mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-6 md:px-10 lg:px-16">
         <Link
           href="/"
           className={cn(
-            "justify-self-start font-display text-[13px] font-extrabold uppercase tracking-[0.24em] text-archon-black",
+            "justify-self-start font-display text-[13px] font-extrabold uppercase tracking-[0.24em] transition-[color,opacity] duration-[900ms] ease-out",
+            useNavyBar ? "text-white" : "text-archon-black",
           )}
           onClick={() => setMenuOpen(false)}
         >
@@ -51,8 +221,10 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors hover:text-archon-navy md:text-[9px] lg:text-[10px]",
-                "text-archon-black/70 hover:text-archon-black",
+                "whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-[color,opacity] duration-[900ms] ease-out md:text-[9px] lg:text-[10px]",
+                useNavyBar
+                  ? "text-white/65 hover:text-white"
+                  : "text-archon-black/70 hover:text-archon-black",
               )}
             >
               {item.label}
@@ -60,30 +232,12 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 justify-self-end md:flex">
-          <CartButton />
-          <Link
-            href={siteConfig.links.shop}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-full border px-5 py-2 font-body text-[10px] font-semibold uppercase tracking-[0.16em]",
-              "border-archon-black/20 text-archon-black",
-            )}
-          >
-            Shop
-            <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden>
-              <path
-                d="M1 8L8 1M8 1H2.5M8 1V6.5"
-                stroke="currentColor"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+        <div className="col-start-3 hidden items-center justify-self-end md:flex">
+          <CartButton onDark={useNavyBar} />
         </div>
 
-        <div className="relative z-50 col-start-3 flex items-center gap-2 justify-self-end md:hidden">
-          <CartButton />
+        <div className="relative z-50 col-start-3 flex items-center gap-5 justify-self-end md:hidden">
+          <CartButton onDark={useNavyBar} />
           <button
             type="button"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -93,13 +247,15 @@ export function Header() {
           >
             <span
               className={cn(
-                "h-px w-5 bg-archon-black transition-transform duration-300 ease-out",
+                "h-px w-5 transition-transform duration-300 ease-out",
+                useNavyBar ? "bg-white" : "bg-archon-black",
                 isMenuOpen && "translate-y-[3.5px] rotate-45",
               )}
             />
             <span
               className={cn(
-                "h-px w-5 bg-archon-black transition-transform duration-300 ease-out",
+                "h-px w-5 transition-transform duration-300 ease-out",
+                useNavyBar ? "bg-white" : "bg-archon-black",
                 isMenuOpen && "-translate-y-[3.5px] -rotate-45",
               )}
             />

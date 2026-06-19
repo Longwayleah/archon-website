@@ -189,7 +189,8 @@ function landHeroType(
     );
 }
 
-const LETTER_STAGGER = 0.17;
+const LETTER_STAGGER = 0.13;
+const LETTER_GLOW_EASE = "sine.inOut";
 const SETTLE_STAGGER = 0.07;
 
 type LetterSettleTarget = {
@@ -424,26 +425,28 @@ export function SplashScreen() {
           { autoAlpha: 1, y: 0, duration: 0.95 },
           "-=0.22",
         )
-        .to({}, { duration: 1.05 })
+        .to({}, { duration: 0.55 })
         .to(letterEls, {
           color: NAVY,
-          scale: 1.06,
-          y: -4,
-          filter: "brightness(1.08)",
+          scale: 1.045,
+          y: -3,
+          filter: "brightness(1.06)",
           textShadow: letterGlow(),
-          duration: 0.42,
-          stagger: { each: LETTER_STAGGER, ease: "power2.out" },
+          duration: 0.68,
+          stagger: { each: LETTER_STAGGER, ease: "sine.out" },
+          ease: LETTER_GLOW_EASE,
         })
         .to(
           letterEls,
           {
             scale: 1,
             y: 0,
-            duration: 0.22,
-            stagger: { each: LETTER_STAGGER, ease: "none" },
-            ease: SPLASH_EASE.exit,
+            filter: "brightness(1)",
+            duration: 0.4,
+            stagger: { each: LETTER_STAGGER, ease: "sine.out" },
+            ease: LETTER_GLOW_EASE,
           },
-          "-=0.1",
+          "-=0.22",
         )
         .to({}, { duration: 0.28 })
         .to(taglineRef.current, {
