@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { images } from "@/config/assets";
-import { HeroKnotAtmosphere } from "./HeroKnotAtmosphere";
 
-/** Layer 0 — hero background photo with integrated knot atmosphere */
+/** Layer 0 — hero background photo */
 export function HeroLuxuryField() {
   return (
     <div
@@ -23,7 +22,6 @@ export function HeroLuxuryField() {
           sizes="100vw"
           className="relative z-0 object-cover [object-position:var(--hero-img-pos)] scale-[1.02]"
         />
-        <HeroKnotAtmosphere />
       </div>
     </div>
   );

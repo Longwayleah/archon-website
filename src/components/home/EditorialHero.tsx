@@ -28,9 +28,13 @@ export function EditorialHero() {
       {/* Right — precision peptides + body */}
       <div
         data-hero-splash-defer
-        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-w-[min(42vw,11.5rem)] top-[var(--hero-mobile-copy-top)] sm:max-w-[10.5rem] md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
+        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-w-[8.75rem] top-[var(--hero-mobile-copy-top)] max-md:text-right md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:text-left md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
       >
-        <div data-hero-reveal="copy" data-hero-parallax="copy" className="will-change-transform">
+        <div
+          data-hero-reveal="copy"
+          data-hero-parallax="copy"
+          className="flex flex-col items-end will-change-transform md:items-start"
+        >
         <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-archon-navy/50 md:text-[11px]">
           {hero.subheadline}
         </p>
@@ -44,7 +48,7 @@ export function EditorialHero() {
 
         <Link
           href={hero.exploreHref}
-          className="group mt-4 inline-flex items-center gap-2 font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60 md:mt-6 md:text-[11px]"
+          className="group mt-6 hidden items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60 md:inline-flex"
         >
           {hero.exploreLabel}
           <svg
@@ -64,6 +68,37 @@ export function EditorialHero() {
             />
           </svg>
         </Link>
+        </div>
+      </div>
+
+      {/* Mobile — CTA tucked to lower-right, clear of vial */}
+      <div
+        data-hero-splash-defer
+        className="absolute right-[var(--hero-mobile-cta-inset-x)] z-20 bottom-[calc(var(--hero-mobile-cta-bottom)+env(safe-area-inset-bottom))] max-md:text-right md:hidden"
+      >
+        <div data-hero-reveal="copy" data-hero-parallax="copy" className="will-change-transform">
+          <Link
+            href={hero.exploreHref}
+            className="group inline-flex items-center gap-2 whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60"
+          >
+            {hero.exploreLabel}
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill="none"
+              aria-hidden
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            >
+              <path
+                d="M1 9L9 1M9 1H3M9 1V7"
+                stroke="currentColor"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
         </div>
       </div>
 

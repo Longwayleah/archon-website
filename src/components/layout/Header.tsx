@@ -1,11 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils/cn";
 import { CartButton } from "@/components/shop/CartButton";
-import { images } from "@/config/assets";
 import { navigation, siteConfig } from "@/config/site";
 import { useAppStore } from "@/store/useAppStore";
 import { useScrollStore } from "@/store/useScrollStore";
@@ -112,24 +110,13 @@ export function Header() {
       <div
         data-open={isMenuOpen ? "true" : "false"}
         className={cn(
-          "mobile-menu-overlay fixed inset-0 z-40 flex flex-col overflow-hidden md:hidden",
+          "mobile-menu-overlay fixed inset-0 z-40 flex flex-col overflow-hidden bg-white md:hidden",
           isMenuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <Image
-            src={images.menuBackground}
-            alt=""
-            fill
-            priority
-            quality={85}
-            sizes="100vw"
-            className="mobile-menu-overlay__media object-cover object-[68%_44%]"
-          />
-          <div className="mobile-menu-overlay__veil absolute inset-0" />
-        </div>
+        <div className="mobile-menu-overlay__surface pointer-events-none absolute inset-0" aria-hidden />
 
-        <nav className="relative z-[1] flex flex-1 flex-col justify-center gap-6 px-10 pt-16">
+        <nav className="relative z-[1] flex flex-1 flex-col justify-center gap-6 px-6 pt-16">
           {navigation.map((item, index) => (
             <Link
               key={item.href}
