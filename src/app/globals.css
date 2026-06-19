@@ -216,8 +216,8 @@ body {
     --hero-vial-width: min(40vw, 25rem);
     --hero-vial-max: 28.75rem;
     --hero-vial-scale: 1;
-    --hero-vial-offset-top: 2rem;
-    --hero-vial-shift: 4.25rem;
+    --hero-vial-offset-top: 4.75rem;
+    --hero-vial-shift: 0;
     --hero-headline-bottom: 7rem;
   }
 }
@@ -226,6 +226,7 @@ body {
   .editorial-hero {
     --hero-vial-width: min(36vw, 27.5rem);
     --hero-vial-max: 31.25rem;
+    --hero-vial-offset-top: 5.75rem;
   }
 }
 
