@@ -28,14 +28,14 @@ export function EditorialHero() {
       {/* Right — precision peptides + body */}
       <div
         data-hero-splash-defer
-        className="absolute right-[var(--hero-inset-x)] z-20 max-w-[min(42vw,11.5rem)] top-[31%] sm:top-[28%] sm:max-w-[10.5rem] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
+        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-w-[min(42vw,11.5rem)] top-[var(--hero-mobile-copy-top)] sm:max-w-[10.5rem] md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
       >
         <div data-hero-reveal="copy" data-hero-parallax="copy" className="will-change-transform">
         <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-archon-navy/50 md:text-[11px]">
           {hero.subheadline}
         </p>
 
-        <p className="mt-4 font-body text-[13px] leading-[1.65] text-archon-charcoal/80 md:text-sm md:leading-relaxed">
+        <p className="mt-3 font-body text-[13px] leading-[1.6] text-archon-charcoal/80 max-md:leading-[1.55] md:mt-4 md:text-sm md:leading-relaxed">
           Formulated to{" "}
           <span className="text-archon-navy">lift recovery</span>,{" "}
           <span className="text-archon-navy/85">sharpen performance</span>, and{" "}
@@ -44,7 +44,7 @@ export function EditorialHero() {
 
         <Link
           href={hero.exploreHref}
-          className="group mt-5 inline-flex items-center gap-2 font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60 md:mt-6 md:text-[11px]"
+          className="group mt-4 inline-flex items-center gap-2 font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60 md:mt-6 md:text-[11px]"
         >
           {hero.exploreLabel}
           <svg
@@ -73,12 +73,16 @@ export function EditorialHero() {
         className="absolute left-[var(--hero-inset-x)] z-20 max-w-[min(82vw,26.25rem)] bottom-[calc(var(--hero-headline-bottom)+env(safe-area-inset-bottom))] lg:left-[var(--hero-inset-x-lg)] lg:max-w-[28.75rem]"
       >
         <div data-hero-reveal="headline" data-hero-parallax="headline" className="will-change-transform">
-        <h1 className="font-display font-semibold uppercase leading-[1.08] tracking-[0.04em] text-archon-navy/88">
-          <span className="block text-[clamp(1.35rem,3.2vw,2.35rem)]">{hero.headline[0]}</span>
-          <span className="hero-glow-word block text-[clamp(1.5rem,3.6vw,2.65rem)]">
+        <h1 className="font-display font-semibold uppercase leading-[1.08] tracking-[0.04em] text-archon-navy/88 max-md:max-w-[11.25rem] max-md:tracking-[0.02em]">
+          <span className="block text-[clamp(1.35rem,3.2vw,2.35rem)] max-md:text-[clamp(1.15rem,2.75vw,1.95rem)]">
+            {hero.headline[0]}
+          </span>
+          <span className="hero-glow-word block text-[clamp(1.5rem,3.6vw,2.65rem)] max-md:text-[clamp(1.3rem,3vw,2.1rem)]">
             {hero.headline[1]}
           </span>
-          <span className="block text-[clamp(1.35rem,3.2vw,2.35rem)]">{hero.headline[2]}</span>
+          <span className="block text-[clamp(1.35rem,3.2vw,2.35rem)] max-md:text-[clamp(1.1rem,2.65vw,1.85rem)]">
+            {hero.headline[2]}
+          </span>
         </h1>
         </div>
       </div>
@@ -92,14 +96,14 @@ export function EditorialHero() {
       {/* Center — vial as focal point */}
       <div
         data-hero-splash-defer
-        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] max-md:pt-[var(--hero-mobile-vial-pad-top)] max-md:pb-[calc(var(--hero-scroll-bottom)+1rem+env(safe-area-inset-bottom))] -translate-y-[var(--hero-vial-shift)]"
+        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] max-md:pt-[var(--hero-mobile-vial-pad-top)] max-md:pb-[calc(var(--hero-mobile-vial-pad-bottom)+env(safe-area-inset-bottom))] -translate-y-[var(--hero-vial-shift)]"
       >
         <div
           data-hero-reveal="vial"
           data-hero-parallax="vial"
           className="flex h-full w-full items-center justify-center will-change-transform"
         >
-        <div className="hero-product-stage relative aspect-[4/5] w-[var(--hero-vial-width)] max-w-[var(--hero-vial-max)]">
+        <div className="hero-product-stage relative aspect-[4/5] w-[var(--hero-vial-width)] max-w-[var(--hero-vial-max)] origin-center scale-[var(--hero-vial-scale)]">
           <HeroVial
             alt={`${hero.modelLabel} — Archon precision peptide`}
             src={hero.heroImage}

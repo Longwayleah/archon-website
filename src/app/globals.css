@@ -184,18 +184,24 @@ body {
   --hero-knot-mask-y: 56%;
   --hero-knot-mask-w: 52%;
   --hero-knot-mask-h: 62%;
-  --hero-mobile-vial-pad-top: 16vh;
-  --hero-vial-width: min(34vw, 10.25rem);
-  --hero-vial-max: 10.25rem;
+  --hero-mobile-vial-pad-top: calc(4.5rem + min(20vh, 9.5rem) + 1rem);
+  --hero-mobile-copy-top: calc(4.5rem + min(20vh, 9.5rem) - 0.35rem + env(safe-area-inset-top));
+  --hero-mobile-copy-inset-x: 0.5rem;
+  --hero-vial-width: min(74vw, 23rem);
+  --hero-vial-max: 23rem;
+  --hero-vial-scale: 1.35;
   --hero-vial-offset-top: 0;
-  --hero-vial-shift: 2.75rem;
-  --hero-headline-bottom: 8.5rem;
+  --hero-vial-shift: 0;
+  --hero-headline-bottom: 5.5rem;
   --hero-scroll-bottom: 1.25rem;
+  --hero-mobile-vial-pad-bottom: calc(var(--hero-headline-bottom) + var(--hero-scroll-bottom) + 5rem);
 }
 
 @media (min-width: 640px) {
   .editorial-hero {
     --hero-img-pos: 40% 52%;
+    --hero-mobile-copy-top: calc(4.5rem + min(21vh, 10.5rem) - 0.35rem + env(safe-area-inset-top));
+    --hero-mobile-vial-pad-top: calc(4.5rem + min(21vh, 10.5rem) + 1rem);
     --hero-vial-width: min(68vw, 21.25rem);
     --hero-vial-max: 21.25rem;
   }
@@ -209,6 +215,7 @@ body {
     --hero-knot-mask-h: 62%;
     --hero-vial-width: min(40vw, 25rem);
     --hero-vial-max: 28.75rem;
+    --hero-vial-scale: 1;
     --hero-vial-offset-top: 2rem;
     --hero-vial-shift: 4.25rem;
     --hero-headline-bottom: 7rem;
@@ -1151,6 +1158,57 @@ html[data-standards-placement-drag] body {
   50% {
     transform: translateX(200%);
   }
+}
+
+/* Mobile menu — soft atmosphere, eased reveal */
+.mobile-menu-overlay {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.65s var(--ease-out-expo),
+    visibility 0.65s var(--ease-out-expo);
+}
+
+.mobile-menu-overlay[data-open="true"] {
+  visibility: visible;
+  opacity: 1;
+}
+
+.mobile-menu-overlay__media {
+  transform: scale(1.06);
+  filter: blur(5px) saturate(0.95);
+}
+
+.mobile-menu-overlay__veil {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(245 245 245 / 0.78) 0%,
+      rgb(245 245 245 / 0.34) 38%,
+      rgb(245 245 245 / 0.08) 68%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(245 245 245 / 0.42) 0%,
+      transparent 28%,
+      transparent 72%,
+      rgb(245 245 245 / 0.38) 100%
+    );
+}
+
+.mobile-menu-overlay__link {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 0.6s var(--ease-out-expo),
+    transform 0.6s var(--ease-out-expo),
+    color 0.35s var(--ease-out-expo);
+}
+
+.mobile-menu-overlay[data-open="true"] .mobile-menu-overlay__link {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils/cn";
 import { CartButton } from "@/components/shop/CartButton";
+import { images } from "@/config/assets";
 import { navigation, siteConfig } from "@/config/site";
 import { useAppStore } from "@/store/useAppStore";
 import { useScrollStore } from "@/store/useScrollStore";
@@ -93,13 +95,13 @@ export function Header() {
           >
             <span
               className={cn(
-                "h-px w-5 bg-archon-black",
+                "h-px w-5 bg-archon-black transition-transform duration-300 ease-out",
                 isMenuOpen && "translate-y-[3.5px] rotate-45",
               )}
             />
             <span
               className={cn(
-                "h-px w-5 bg-archon-black",
+                "h-px w-5 bg-archon-black transition-transform duration-300 ease-out",
                 isMenuOpen && "-translate-y-[3.5px] -rotate-45",
               )}
             />
@@ -108,17 +110,34 @@ export function Header() {
       </div>
 
       <div
+        data-open={isMenuOpen ? "true" : "false"}
         className={cn(
-          "fixed inset-0 z-40 flex flex-col bg-white md:hidden",
-          isMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+          "mobile-menu-overlay fixed inset-0 z-40 flex flex-col overflow-hidden md:hidden",
+          isMenuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
-        <nav className="flex flex-1 flex-col justify-center gap-8 px-10">
-          {navigation.map((item) => (
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <Image
+            src={images.menuBackground}
+            alt=""
+            fill
+            priority
+            quality={85}
+            sizes="100vw"
+            className="mobile-menu-overlay__media object-cover object-[68%_44%]"
+          />
+          <div className="mobile-menu-overlay__veil absolute inset-0" />
+        </div>
+
+        <nav className="relative z-[1] flex flex-1 flex-col justify-center gap-6 px-10 pt-16">
+          {navigation.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
-              className="font-body text-3xl font-extrabold uppercase tracking-[-0.02em] text-archon-black"
+              className="mobile-menu-overlay__link font-display text-[clamp(1.75rem,7vw,2.25rem)] font-semibold uppercase tracking-[-0.02em] text-archon-navy/88 transition-colors hover:text-archon-navy"
+              style={{
+                transitionDelay: isMenuOpen ? `${140 + index * 70}ms` : "0ms",
+              }}
               onClick={() => setMenuOpen(false)}
             >
               {item.label}

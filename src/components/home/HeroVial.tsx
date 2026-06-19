@@ -151,7 +151,7 @@ export function HeroVial({
         fill
         priority={priority}
         quality={82}
-        sizes="(max-width: 768px) 55vw, 380px"
+        sizes="(max-width: 768px) 80vw, 420px"
         className={cn(
           "select-none object-contain",
           centered ? "object-center" : "object-bottom",

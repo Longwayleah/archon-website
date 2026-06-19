@@ -28,6 +28,7 @@ export const images = {
   featuredProtocolBackground: "/images/ribbon-without-glow.png",
   elevateRoutineBackground: "/images/elevate-routine-background.png",
   footerBackground: "/images/footer-background.png",
+  menuBackground: "/images/menu-background.png",
   standardsWall: "/images/standards-sticky-wall.png",
 } as const;
 
