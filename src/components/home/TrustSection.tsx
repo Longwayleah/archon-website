@@ -188,13 +188,13 @@ export function TrustSection() {
           </p>
           <h2
             data-standards-enter
-            className="mt-3 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-semibold text-archon-navy"
+            className="mt-3 font-display text-[clamp(1.55rem,4.2vw,2.75rem)] font-semibold leading-[1.08] text-archon-navy md:text-[clamp(1.75rem,3.5vw,2.75rem)] md:leading-tight"
           >
             {trustSection.headline}
           </h2>
           <p
             data-standards-enter
-            className="mt-4 font-body text-sm leading-relaxed text-archon-muted md:text-base"
+            className="mt-3 max-w-[34rem] font-body text-[13px] leading-[1.55] text-archon-muted md:mt-4 md:text-sm md:leading-relaxed lg:text-base"
           >
             {trustSection.body}
           </p>

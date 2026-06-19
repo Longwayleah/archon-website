@@ -41,24 +41,24 @@ function getValueFontClass(value: string) {
   const longestWord = Math.max(...value.split(/\s+/).map((word) => word.length), 0);
 
   if (longestWord >= 11) {
-    return "max-w-[95%] text-[clamp(0.8rem,1.75vw,1.55rem)] leading-[0.92] tracking-[-0.04em]";
+    return "max-w-[95%] max-md:text-[clamp(0.7rem,1.45vw,1.55rem)] max-md:leading-[0.94] md:text-[clamp(0.8rem,1.75vw,1.55rem)] md:leading-[0.92] tracking-[-0.04em]";
   }
 
   if (longestWord >= 9) {
-    return "text-[clamp(1.05rem,2.45vw,2rem)] leading-[0.95] tracking-[-0.03em]";
+    return "max-md:text-[clamp(0.88rem,2vw,2rem)] max-md:leading-[0.96] md:text-[clamp(1.05rem,2.45vw,2rem)] md:leading-[0.95] tracking-[-0.03em]";
   }
 
-  return "text-[clamp(1.35rem,3.2vw,2.75rem)] leading-[0.95] tracking-[-0.03em]";
+  return "max-md:text-[clamp(1rem,2.35vw,2.75rem)] max-md:leading-[0.96] md:text-[clamp(1.35rem,3.2vw,2.75rem)] md:leading-[0.95] tracking-[-0.03em]";
 }
 
 function getLabelFontClass(value: string) {
   const longestWord = Math.max(...value.split(/\s+/).map((word) => word.length), 0);
 
   if (longestWord >= 11) {
-    return "text-[clamp(7px,0.9vw,9.5px)] tracking-[0.14em]";
+    return "max-md:text-[clamp(6.5px,0.78vw,9.5px)] max-md:tracking-[0.12em] md:text-[clamp(7px,0.9vw,9.5px)] md:tracking-[0.14em]";
   }
 
-  return "text-[clamp(8px,1.05vw,11px)] tracking-[0.18em]";
+  return "max-md:text-[clamp(7px,0.88vw,11px)] max-md:tracking-[0.14em] md:text-[clamp(8px,1.05vw,11px)] md:tracking-[0.18em]";
 }
 
 export function StandardsWallStage() {
@@ -387,7 +387,7 @@ export function StandardsWallStage() {
                   {pillar.value}
                 </p>
                 <h3
-                  className={`standards-wall-fact__label mt-1.5 font-body font-semibold uppercase leading-[1.35] text-archon-navy/80 ${getLabelFontClass(pillar.value)}`}
+                  className={`standards-wall-fact__label mt-1 max-md:leading-[1.28] md:mt-1.5 md:leading-[1.35] font-body font-semibold uppercase text-archon-navy/80 ${getLabelFontClass(pillar.value)}`}
                 >
                   {pillar.label.split(" ").map((word) => (
                     <span key={word} className="block">
@@ -396,7 +396,7 @@ export function StandardsWallStage() {
                   ))}
                 </h3>
                 {isLink ? (
-                  <span className="standards-wall-fact__hint mt-1 font-body text-[clamp(7px,0.85vw,9px)] uppercase tracking-[0.14em] text-archon-navy/45 underline decoration-archon-navy/25 underline-offset-[3px]">
+                  <span className="standards-wall-fact__hint mt-0.5 max-md:text-[7px] md:mt-1 font-body text-[clamp(7px,0.85vw,9px)] uppercase tracking-[0.12em] text-archon-navy/45 underline decoration-archon-navy/25 underline-offset-[3px] md:tracking-[0.14em]">
                     View library →
                   </span>
                 ) : null}

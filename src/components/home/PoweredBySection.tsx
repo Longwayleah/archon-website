@@ -250,17 +250,17 @@ export function PoweredBySection() {
       <GrainOverlay />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1600px] items-center px-6 py-24 md:px-10 md:py-28 lg:px-16 lg:py-32">
-        <div className="flex max-w-[min(88vw,40rem)] flex-col justify-center gap-8 md:gap-10">
+        <div className="flex max-w-[min(88vw,40rem)] flex-col justify-center gap-10 md:gap-10">
           <h2
             data-powered-parallax="headline"
-            className="font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-archon-navy will-change-transform"
+            className="font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-archon-navy will-change-transform md:leading-[0.92]"
           >
             {reduced
               ? poweredBy.headline
               : headlineWords.map((word, index) => (
                   <span
                     key={`${word}-${index}`}
-                    className="inline-block overflow-hidden align-bottom"
+                    className="inline-block overflow-hidden align-bottom pb-[0.06em] md:pb-0"
                   >
                     <span data-powered-word className="inline-block">
                       {word}
@@ -270,12 +270,15 @@ export function PoweredBySection() {
                 ))}
           </h2>
 
-          <div data-powered-parallax="body" className="space-y-2 will-change-transform">
+          <div
+            data-powered-parallax="body"
+            className="flex flex-col gap-3.5 will-change-transform md:gap-2"
+          >
             {poweredBy.body.map((line) => (
               <p
                 key={line}
                 data-powered-line
-                className="font-display text-[clamp(1rem,2.4vw,1.35rem)] font-semibold uppercase leading-[1.15] tracking-[0.04em] text-archon-navy"
+                className="font-display text-[clamp(1rem,2.4vw,1.35rem)] font-semibold uppercase leading-[1.38] tracking-[0.04em] text-archon-navy md:leading-[1.15]"
               >
                 {line}
               </p>

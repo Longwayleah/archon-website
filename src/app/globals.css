@@ -182,12 +182,14 @@ body {
   --hero-img-pos: 62% 58%;
   --hero-mobile-wordmark-band: min(20vh, 9.5rem);
   --hero-mobile-copy-top: calc(
-    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 0.625rem
+    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 0.875rem
   );
-  --hero-mobile-copy-height: 7.5rem;
+  --hero-mobile-copy-height: 8.75rem;
   --hero-mobile-vial-pad-top: calc(
     var(--hero-mobile-copy-top) + var(--hero-mobile-copy-height) + 0.875rem
   );
+  --hero-mobile-copy-inset-x: 1.25rem;
+  --hero-mobile-vial-shift-x: -7vw;
   --hero-vial-width: min(74vw, 23rem);
   --hero-vial-max: 23rem;
   --hero-vial-scale: 1.35;
@@ -203,7 +205,7 @@ body {
     --hero-img-pos: 40% 52%;
     --hero-mobile-wordmark-band: min(21vh, 10.5rem);
     --hero-mobile-copy-top: calc(
-      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 0.625rem
+      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 0.875rem
     );
     --hero-mobile-vial-pad-top: calc(
       var(--hero-mobile-copy-top) + var(--hero-mobile-copy-height) + 0.875rem
@@ -968,6 +970,13 @@ html[data-standards-placement-drag] body {
 .mobile-menu-overlay[data-open="true"] .mobile-menu-overlay__link {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-overlay[data-open="true"] .mobile-menu-overlay__link {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -25,21 +25,21 @@ export function EditorialHero() {
       <HeroLuxuryField />
       <HeroTopWordmark />
 
-      {/* Precision peptides — centered above vial on mobile, right on desktop */}
+      {/* Right — precision peptides + body */}
       <div
         data-hero-splash-defer
-        className="absolute z-20 top-[var(--hero-mobile-copy-top)] max-md:left-1/2 max-md:w-[min(88vw,17rem)] max-md:-translate-x-1/2 max-md:text-center md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:translate-x-0 md:text-left md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
+        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-md:w-[min(38vw,10.25rem)] max-md:text-left top-[var(--hero-mobile-copy-top)] md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:w-auto md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
       >
         <div
           data-hero-reveal="copy"
           data-hero-parallax="copy"
           className="will-change-transform"
         >
-        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy/50 md:text-[11px] md:tracking-[0.28em]">
+        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy/50 max-md:whitespace-nowrap md:text-[11px] md:tracking-[0.28em]">
           {hero.subheadline}
         </p>
 
-        <p className="mt-2 font-body text-[11px] leading-[1.58] text-archon-charcoal/80 md:mt-4 md:text-sm md:leading-relaxed">
+        <p className="mt-2.5 font-body text-[12px] leading-[1.62] text-archon-charcoal/80 md:mt-4 md:text-sm md:leading-relaxed">
           Formulated to{" "}
           <span className="text-archon-navy">lift recovery</span>,{" "}
           <span className="text-archon-navy/85">sharpen performance</span>, and{" "}
@@ -48,7 +48,7 @@ export function EditorialHero() {
 
         <Link
           href={hero.exploreHref}
-          className="group mx-auto mt-2 inline-flex items-center gap-1 font-body text-[8px] font-semibold uppercase leading-tight tracking-[0.14em] text-archon-navy transition-colors hover:text-archon-navy/60 max-md:justify-center md:mx-0 md:mt-6 md:gap-2 md:text-[11px] md:tracking-[0.22em]"
+          className="group mt-2.5 inline-flex items-center gap-1 font-body text-[8px] font-semibold uppercase leading-tight tracking-[0.14em] text-archon-navy transition-colors hover:text-archon-navy/60 md:mt-6 md:gap-2 md:text-[11px] md:tracking-[0.22em]"
         >
           {hero.exploreLabel}
           <svg
@@ -100,7 +100,7 @@ export function EditorialHero() {
       {/* Center — vial as focal point */}
       <div
         data-hero-splash-defer
-        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] max-md:pt-[var(--hero-mobile-vial-pad-top)] max-md:pb-[calc(var(--hero-mobile-vial-pad-bottom)+env(safe-area-inset-bottom))] -translate-y-[var(--hero-vial-shift)]"
+        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] max-md:pt-[var(--hero-mobile-vial-pad-top)] max-md:pb-[calc(var(--hero-mobile-vial-pad-bottom)+env(safe-area-inset-bottom))] max-md:translate-x-[var(--hero-mobile-vial-shift-x)] -translate-y-[var(--hero-vial-shift)]"
       >
         <div
           data-hero-reveal="vial"

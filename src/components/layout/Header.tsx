@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 import { CartButton } from "@/components/shop/CartButton";
 import { navigation, siteConfig } from "@/config/site";
@@ -100,10 +101,15 @@ export function Header() {
   const scrollDirection = useScrollStore((s) => s.direction);
   const setScroll = useScrollStore((s) => s.setScroll);
   const lastScrollDirection = useRef<"up" | "down" | null>(null);
+  const [mounted, setMounted] = useState(false);
   const [homeHeaderMetrics, setHomeHeaderMetrics] = useState({
     hideEnd: 780,
     hideStart: 520,
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (scrollDirection) {
@@ -133,6 +139,7 @@ export function Header() {
   const navyStrength =
     isHomePage && !isMenuOpen ? navyReveal * navyExit : 0;
   const useNavyBar = navyStrength > 0.32;
+  const mobileIconOnDark = useNavyBar && !isMenuOpen;
 
   useEffect(() => {
     setScroll({ scrollY: 0, velocity: 0, direction: null, progress: 0 });
@@ -162,7 +169,7 @@ export function Header() {
     ? "transform 560ms cubic-bezier(0.16, 1, 0.3, 1), opacity 720ms cubic-bezier(0.22, 1, 0.36, 1)"
     : "transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms cubic-bezier(0.16, 1, 0.3, 1)";
 
-  const homeHeaderStyle =
+  const homeBarStyle =
     isHomePage && !isMenuOpen
       ? {
           transform: `translate3d(0, ${-homeMotion.translateY}%, 0) scale(${homeMotion.scale})`,
@@ -171,115 +178,32 @@ export function Header() {
         }
       : undefined;
 
-  return (
-    <header
-      style={homeHeaderStyle}
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 will-change-[transform,opacity]",
-        !isHomePage &&
-          "transition-[background-color,border-color] duration-500 ease-out",
-        !homeHeaderInteractive && "pointer-events-none",
-        isHomePage
-          ? cn(
-              "border-b backdrop-blur-sm transition-[border-color,background-color] duration-[900ms] ease-out",
-              navyBarOpacity > 0.04
-                ? "border-white/10"
-                : "border-transparent bg-transparent",
-            )
-          : !showSolidBar
-            ? "bg-transparent"
-            : "border-b border-black/5 bg-white/90 backdrop-blur-sm transition-[background-color,border-color] duration-500 ease-out",
-      )}
-    >
-      {isHomePage && navyBarOpacity > 0.04 ? (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-archon-navy/95"
-          style={{
-            opacity: navyBarOpacity,
-            transition: isRevealingHeader
-              ? "opacity 680ms cubic-bezier(0.22, 1, 0.36, 1)"
-              : "opacity 360ms cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        />
-      ) : null}
-      <div className="relative z-[1] mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-6 md:px-10 lg:px-16">
-        <Link
-          href="/"
-          className={cn(
-            "justify-self-start font-display text-[13px] font-extrabold uppercase tracking-[0.24em] transition-[color,opacity] duration-[900ms] ease-out",
-            useNavyBar ? "text-white" : "text-archon-black",
-          )}
-          onClick={() => setMenuOpen(false)}
-        >
-          {siteConfig.name}
-        </Link>
-
-        <nav className="relative z-10 hidden items-center justify-self-center md:flex md:gap-5 lg:gap-7 xl:gap-9">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-[color,opacity] duration-[900ms] ease-out md:text-[9px] lg:text-[10px]",
-                useNavyBar
-                  ? "text-white/65 hover:text-white"
-                  : "text-archon-black/70 hover:text-archon-black",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="col-start-3 hidden items-center justify-self-end md:flex">
-          <CartButton onDark={useNavyBar} />
-        </div>
-
-        <div className="relative z-50 col-start-3 flex items-center gap-5 justify-self-end md:hidden">
-          <CartButton onDark={useNavyBar} />
-          <button
-            type="button"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMenuOpen}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
-            onClick={toggleMenu}
-          >
-            <span
-              className={cn(
-                "h-px w-5 transition-transform duration-300 ease-out",
-                useNavyBar ? "bg-white" : "bg-archon-black",
-                isMenuOpen && "translate-y-[3.5px] rotate-45",
-              )}
-            />
-            <span
-              className={cn(
-                "h-px w-5 transition-transform duration-300 ease-out",
-                useNavyBar ? "bg-white" : "bg-archon-black",
-                isMenuOpen && "-translate-y-[3.5px] -rotate-45",
-              )}
-            />
-          </button>
-        </div>
-      </div>
-
+  const mobileMenu =
+    mounted &&
+    createPortal(
       <div
         data-open={isMenuOpen ? "true" : "false"}
         className={cn(
-          "mobile-menu-overlay fixed inset-0 z-40 flex flex-col overflow-hidden bg-white md:hidden",
+          "mobile-menu-overlay fixed inset-0 z-[100] flex flex-col overflow-y-auto bg-white md:hidden",
           isMenuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
+        aria-hidden={!isMenuOpen}
       >
         <div className="mobile-menu-overlay__surface pointer-events-none absolute inset-0" aria-hidden />
 
-        <nav className="relative z-[1] flex flex-1 flex-col justify-center gap-6 px-6 pt-16">
+        <nav
+          id="mobile-primary-nav"
+          className="relative z-[1] flex min-h-full flex-col justify-center gap-6 px-6 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-[calc(5rem+env(safe-area-inset-top))]"
+          aria-label="Mobile"
+        >
           {navigation.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
-              className="mobile-menu-overlay__link font-display text-[clamp(1.75rem,7vw,2.25rem)] font-semibold uppercase tracking-[-0.02em] text-archon-navy/88 transition-colors hover:text-archon-navy"
+              tabIndex={isMenuOpen ? 0 : -1}
+              className="mobile-menu-overlay__link font-display text-[clamp(1.75rem,7vw,2.25rem)] font-semibold uppercase tracking-[-0.02em] text-archon-navy transition-colors hover:text-archon-navy"
               style={{
-                transitionDelay: isMenuOpen ? `${140 + index * 70}ms` : "0ms",
+                transitionDelay: isMenuOpen ? `${120 + index * 60}ms` : "0ms",
               }}
               onClick={() => setMenuOpen(false)}
             >
@@ -287,7 +211,119 @@ export function Header() {
             </Link>
           ))}
         </nav>
-      </div>
-    </header>
+      </div>,
+      document.body,
+    );
+
+  return (
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-[110]",
+          !isHomePage &&
+            "transition-[background-color,border-color] duration-500 ease-out",
+          isMenuOpen && "border-b border-black/5 bg-white/95 backdrop-blur-sm",
+          isHomePage && !isMenuOpen
+            ? cn(
+                "border-b backdrop-blur-sm transition-[border-color,background-color] duration-[900ms] ease-out",
+                navyBarOpacity > 0.04
+                  ? "border-white/10"
+                  : "border-transparent bg-transparent",
+              )
+            : !isHomePage && !showSolidBar
+              ? "bg-transparent"
+              : !isHomePage
+                ? "border-b border-black/5 bg-white/90 backdrop-blur-sm transition-[background-color,border-color] duration-500 ease-out"
+                : null,
+        )}
+      >
+        <div
+          style={homeBarStyle}
+          className={cn(
+            "relative will-change-[transform,opacity]",
+            !homeHeaderInteractive && "pointer-events-none md:pointer-events-auto",
+          )}
+        >
+          {isHomePage && !isMenuOpen && navyBarOpacity > 0.04 ? (
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-archon-navy/95"
+              style={{
+                opacity: navyBarOpacity,
+                transition: isRevealingHeader
+                  ? "opacity 680ms cubic-bezier(0.22, 1, 0.36, 1)"
+                  : "opacity 360ms cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+            />
+          ) : null}
+          <div className="relative z-[1] mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-6 md:px-10 lg:px-16">
+            <Link
+              href="/"
+              className={cn(
+                "justify-self-start font-display text-[13px] font-extrabold uppercase tracking-[0.24em] transition-[color,opacity] duration-[900ms] ease-out",
+                isMenuOpen
+                  ? "text-archon-black"
+                  : useNavyBar
+                    ? "text-white"
+                    : "text-archon-black",
+              )}
+              onClick={() => setMenuOpen(false)}
+            >
+              {siteConfig.name}
+            </Link>
+
+            <nav className="relative z-10 hidden items-center justify-self-center md:flex md:gap-5 lg:gap-7 xl:gap-9">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-[color,opacity] duration-[900ms] ease-out md:text-[9px] lg:text-[10px]",
+                    useNavyBar
+                      ? "text-white/65 hover:text-white"
+                      : "text-archon-black/70 hover:text-archon-black",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="col-start-3 hidden items-center justify-self-end md:flex">
+              <CartButton onDark={useNavyBar} />
+            </div>
+
+            <div className="pointer-events-auto relative z-50 col-start-3 flex items-center gap-4 justify-self-end md:hidden">
+              <CartButton onDark={isMenuOpen ? false : mobileIconOnDark} />
+              <button
+                type="button"
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-primary-nav"
+                className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
+                onClick={toggleMenu}
+              >
+                <span
+                  className={cn(
+                    "h-px w-5 transition-transform duration-300 ease-out",
+                    mobileIconOnDark ? "bg-white" : "bg-archon-black",
+                    isMenuOpen && "translate-y-[3.5px] rotate-45",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "h-px w-5 transition-transform duration-300 ease-out",
+                    mobileIconOnDark ? "bg-white" : "bg-archon-black",
+                    isMenuOpen && "-translate-y-[3.5px] -rotate-45",
+                  )}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {mobileMenu}
+    </>
   );
 }
