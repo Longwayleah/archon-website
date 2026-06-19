@@ -182,7 +182,7 @@ body {
   --hero-img-pos: 62% 58%;
   --hero-mobile-wordmark-band: min(20vh, 9.5rem);
   --hero-mobile-copy-top: calc(
-    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 0.875rem
+    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 2rem
   );
   --hero-mobile-copy-height: 8.75rem;
   --hero-mobile-vial-pad-top: calc(
@@ -205,7 +205,7 @@ body {
     --hero-img-pos: 40% 52%;
     --hero-mobile-wordmark-band: min(21vh, 10.5rem);
     --hero-mobile-copy-top: calc(
-      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 0.875rem
+      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) - 2rem
     );
     --hero-mobile-vial-pad-top: calc(
       var(--hero-mobile-copy-top) + var(--hero-mobile-copy-height) + 0.875rem
