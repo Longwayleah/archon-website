@@ -28,18 +28,18 @@ export function EditorialHero() {
       {/* Right — precision peptides + body */}
       <div
         data-hero-splash-defer
-        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-w-[8.75rem] top-[var(--hero-mobile-copy-top)] max-md:text-right md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:text-left md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
+        className="absolute right-[var(--hero-mobile-copy-inset-x)] z-20 max-w-[11rem] top-[var(--hero-mobile-copy-top)] md:right-[var(--hero-inset-x)] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
       >
         <div
           data-hero-reveal="copy"
           data-hero-parallax="copy"
-          className="flex flex-col items-end will-change-transform md:items-start"
+          className="will-change-transform"
         >
-        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-archon-navy/50 md:text-[11px]">
+        <p className="font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy/50 max-md:whitespace-nowrap md:text-[11px] md:tracking-[0.28em]">
           {hero.subheadline}
         </p>
 
-        <p className="mt-3 font-body text-[13px] leading-[1.6] text-archon-charcoal/80 max-md:leading-[1.55] md:mt-4 md:text-sm md:leading-relaxed">
+        <p className="mt-2.5 font-body text-[12px] leading-[1.62] text-archon-charcoal/80 md:mt-4 md:text-sm md:leading-relaxed">
           Formulated to{" "}
           <span className="text-archon-navy">lift recovery</span>,{" "}
           <span className="text-archon-navy/85">sharpen performance</span>, and{" "}
@@ -48,16 +48,16 @@ export function EditorialHero() {
 
         <Link
           href={hero.exploreHref}
-          className="group mt-6 hidden items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60 md:inline-flex"
+          className="group mt-2.5 inline-flex items-center gap-1 font-body text-[8px] font-semibold uppercase leading-tight tracking-[0.14em] text-archon-navy transition-colors hover:text-archon-navy/60 md:mt-6 md:gap-2 md:text-[11px] md:tracking-[0.22em]"
         >
           {hero.exploreLabel}
           <svg
-            width="10"
-            height="10"
+            width="8"
+            height="8"
             viewBox="0 0 10 10"
             fill="none"
             aria-hidden
-            className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            className="shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 md:h-[10px] md:w-[10px]"
           >
             <path
               d="M1 9L9 1M9 1H3M9 1V7"
@@ -68,37 +68,6 @@ export function EditorialHero() {
             />
           </svg>
         </Link>
-        </div>
-      </div>
-
-      {/* Mobile — CTA tucked to lower-right, clear of vial */}
-      <div
-        data-hero-splash-defer
-        className="absolute right-[var(--hero-mobile-cta-inset-x)] z-20 bottom-[calc(var(--hero-mobile-cta-bottom)+env(safe-area-inset-bottom))] max-md:text-right md:hidden"
-      >
-        <div data-hero-reveal="copy" data-hero-parallax="copy" className="will-change-transform">
-          <Link
-            href={hero.exploreHref}
-            className="group inline-flex items-center gap-2 whitespace-nowrap font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-archon-navy transition-colors hover:text-archon-navy/60"
-          >
-            {hero.exploreLabel}
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 10 10"
-              fill="none"
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            >
-              <path
-                d="M1 9L9 1M9 1H3M9 1V7"
-                stroke="currentColor"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
         </div>
       </div>
 

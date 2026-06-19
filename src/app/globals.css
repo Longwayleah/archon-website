@@ -182,15 +182,13 @@ body {
   --hero-img-pos: 62% 58%;
   --hero-mobile-wordmark-band: min(20vh, 9.5rem);
   --hero-mobile-copy-top: calc(
-    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 1.5rem
+    4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 0.35rem
   );
   --hero-mobile-vial-pad-top: max(
-    calc(var(--hero-mobile-copy-top) + 5rem),
+    calc(var(--hero-mobile-copy-top) + 6.25rem),
     calc(4.5rem + var(--hero-mobile-wordmark-band) + 1rem)
   );
   --hero-mobile-copy-inset-x: var(--hero-inset-x);
-  --hero-mobile-cta-inset-x: var(--hero-inset-x);
-  --hero-mobile-cta-bottom: calc(var(--hero-headline-bottom) + 4.75rem);
   --hero-vial-width: min(74vw, 23rem);
   --hero-vial-max: 23rem;
   --hero-vial-scale: 1.35;
@@ -206,10 +204,10 @@ body {
     --hero-img-pos: 40% 52%;
     --hero-mobile-wordmark-band: min(21vh, 10.5rem);
     --hero-mobile-copy-top: calc(
-      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 1.5rem
+      4.5rem + var(--hero-mobile-wordmark-band) + env(safe-area-inset-top) + 0.35rem
     );
     --hero-mobile-vial-pad-top: max(
-      calc(var(--hero-mobile-copy-top) + 5rem),
+      calc(var(--hero-mobile-copy-top) + 6.25rem),
       calc(4.5rem + var(--hero-mobile-wordmark-band) + 1rem)
     );
     --hero-vial-width: min(68vw, 21.25rem);
