@@ -179,16 +179,17 @@ body {
 .editorial-hero {
   --hero-inset-x: 1.5rem;
   --hero-inset-x-lg: 4rem;
-  --hero-img-pos: 40% 55%;
-  --hero-knot-mask-x: 32%;
-  --hero-knot-mask-y: 53%;
-  --hero-knot-mask-w: 56%;
-  --hero-knot-mask-h: 64%;
-  --hero-vial-width: min(64vw, 18.25rem);
-  --hero-vial-max: 18.25rem;
-  --hero-vial-offset-top: 3.25rem;
-  --hero-vial-shift: 0.75rem;
-  --hero-headline-bottom: 7.25rem;
+  --hero-img-pos: 62% 58%;
+  --hero-knot-mask-x: 38%;
+  --hero-knot-mask-y: 56%;
+  --hero-knot-mask-w: 52%;
+  --hero-knot-mask-h: 62%;
+  --hero-mobile-vial-pad-top: 16vh;
+  --hero-vial-width: min(34vw, 10.25rem);
+  --hero-vial-max: 10.25rem;
+  --hero-vial-offset-top: 0;
+  --hero-vial-shift: 2.75rem;
+  --hero-headline-bottom: 8.5rem;
   --hero-scroll-bottom: 1.25rem;
 }
 
@@ -208,8 +209,8 @@ body {
     --hero-knot-mask-h: 62%;
     --hero-vial-width: min(40vw, 25rem);
     --hero-vial-max: 28.75rem;
-    --hero-vial-offset-top: 4rem;
-    --hero-vial-shift: 2rem;
+    --hero-vial-offset-top: 2rem;
+    --hero-vial-shift: 4.25rem;
     --hero-headline-bottom: 7rem;
   }
 }

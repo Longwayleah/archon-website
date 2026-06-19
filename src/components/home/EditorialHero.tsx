@@ -28,7 +28,7 @@ export function EditorialHero() {
       {/* Right — precision peptides + body */}
       <div
         data-hero-splash-defer
-        className="absolute right-[var(--hero-inset-x)] z-10 max-w-[min(42vw,11.5rem)] top-[31%] sm:top-[28%] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
+        className="absolute right-[var(--hero-inset-x)] z-20 max-w-[min(42vw,11.5rem)] top-[31%] sm:top-[28%] sm:max-w-[10.5rem] md:top-1/2 md:max-w-[18.75rem] md:-translate-y-1/2 lg:right-[var(--hero-inset-x-lg)] lg:max-w-[20rem]"
       >
         <div data-hero-reveal="copy" data-hero-parallax="copy" className="will-change-transform">
         <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-archon-navy/50 md:text-[11px]">
@@ -70,7 +70,7 @@ export function EditorialHero() {
       {/* Lower-left — headline */}
       <div
         data-hero-splash-defer
-        className="absolute left-[var(--hero-inset-x)] z-10 max-w-[min(82vw,26.25rem)] bottom-[calc(var(--hero-headline-bottom)+env(safe-area-inset-bottom))] lg:left-[var(--hero-inset-x-lg)] lg:max-w-[28.75rem]"
+        className="absolute left-[var(--hero-inset-x)] z-20 max-w-[min(82vw,26.25rem)] bottom-[calc(var(--hero-headline-bottom)+env(safe-area-inset-bottom))] lg:left-[var(--hero-inset-x-lg)] lg:max-w-[28.75rem]"
       >
         <div data-hero-reveal="headline" data-hero-parallax="headline" className="will-change-transform">
         <h1 className="font-display font-semibold uppercase leading-[1.08] tracking-[0.04em] text-archon-navy/88">
@@ -92,7 +92,7 @@ export function EditorialHero() {
       {/* Center — vial as focal point */}
       <div
         data-hero-splash-defer
-        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] -translate-y-[var(--hero-vial-shift)]"
+        className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center pt-[var(--hero-vial-offset-top)] max-md:pt-[var(--hero-mobile-vial-pad-top)] max-md:pb-[calc(var(--hero-scroll-bottom)+1rem+env(safe-area-inset-bottom))] -translate-y-[var(--hero-vial-shift)]"
       >
         <div
           data-hero-reveal="vial"

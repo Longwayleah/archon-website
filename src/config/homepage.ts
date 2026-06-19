@@ -103,7 +103,7 @@ export const homepageCopy = {
   trustSection: {
     eyebrow: "Standards",
     headline: "Premium peptides you can trust.",
-    body: "Pharmaceutical-grade compounds — independently tested, batch-documented, and transparently labeled.",
+    body: "Precision-formulated compounds — independently tested, batch-documented, and transparently labeled.",
     pillars: [
       {
         value: "99%+",

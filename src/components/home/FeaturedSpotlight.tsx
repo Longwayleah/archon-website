@@ -187,13 +187,13 @@ export function FeaturedSpotlight() {
         >
           <div
             data-featured-content
-            className="flex w-full max-w-4xl -translate-y-2 flex-col items-center md:-translate-y-3"
+            className="flex w-full max-w-4xl flex-col items-center max-md:-translate-y-2 md:-translate-y-1"
           >
             <div
               ref={slidesRef}
               data-featured-enter
               data-featured-slides
-              className="relative mx-auto aspect-[4/5] h-[min(56svh,640px)] w-auto max-w-[min(94vw,640px)] -translate-y-1 md:h-[min(58svh,760px)] md:max-w-[760px] lg:h-[min(62svh,820px)] lg:max-w-[820px]"
+              className="relative mx-auto aspect-[4/5] h-[min(56svh,640px)] w-auto max-w-[min(94vw,640px)] max-md:-translate-y-1 md:h-[min(50svh,620px)] md:max-w-[680px] lg:h-[min(48svh,660px)] lg:max-w-[720px]"
               role="region"
               aria-roledescription="carousel"
               aria-label="Featured protocol vials"
@@ -228,7 +228,7 @@ export function FeaturedSpotlight() {
             <div
               ref={copyRef}
               data-featured-enter
-              className="-mt-20 w-full px-4 text-center md:-mt-32 lg:-mt-36"
+              className="-mt-20 w-full px-4 text-center md:mt-2 lg:mt-4"
               aria-live="polite"
             >
               <ProductName

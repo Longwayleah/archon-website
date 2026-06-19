@@ -10,7 +10,7 @@ export type KnotEmber = {
 export const heroLayout = {
   knot: {
     mask: {
-      mobile: { x: "32%", y: "53%", width: "56%", height: "64%" },
+      mobile: { x: "38%", y: "56%", width: "52%", height: "62%" },
       desktop: { x: "27%", y: "51%", width: "48%", height: "62%" },
     },
     embers: {

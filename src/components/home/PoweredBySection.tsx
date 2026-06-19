@@ -59,7 +59,7 @@ export function PoweredBySection() {
       waveTweenRef.current = gsap.to(
         {},
         {
-          duration: 14,
+          duration: 10,
           repeat: -1,
           ease: "none",
           paused: true,
@@ -69,11 +69,12 @@ export function PoweredBySection() {
             const drift = Math.cos(t * 0.85);
 
             gsap.set(mesh, {
-              x: drift * 4,
-              rotation: 0,
-              y: wave * 10,
-              skewY: wave * 1.2,
-              scaleY: 1 + wave * 0.014,
+              x: drift * 14,
+              y: wave * 28,
+              rotation: wave * 1.4,
+              skewY: wave * 2.8,
+              scaleY: 1 + wave * 0.035,
+              scaleX: 1 + drift * 0.015,
             });
           },
         },
@@ -121,7 +122,7 @@ export function PoweredBySection() {
           </div>
         </div>
 
-        <div className="absolute inset-0 bg-archon-cream/12" />
+        <div className="absolute inset-0 bg-archon-cream/8" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_68%_46%,rgba(69,89,128,0.22)_0%,transparent_54%)]" />
         <div className="absolute inset-0 bg-gradient-to-r from-archon-cream from-0% via-archon-cream/65 via-[28%] to-transparent to-[62%]" />
         <div className="absolute inset-0 bg-gradient-to-b from-archon-cream/28 via-transparent via-20% to-archon-cream/18" />
