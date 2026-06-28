@@ -4,6 +4,7 @@ import { fontVariables } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { Providers } from "@/providers";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -48,6 +49,7 @@ export default function RootLayout({
         <Providers>
           <SiteShell>{children}</SiteShell>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
