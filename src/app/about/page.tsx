@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: `About ${siteConfig.name} — elevated wellness and refined performance.`,
-};
+export const metadata = createPageMetadata({
+  title: "About Archon Peptide",
+  description: `About ${seo.siteName} — premium research peptides engineered with purpose, precision, and performance.`,
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
@@ -16,10 +17,10 @@ export default function AboutPage() {
           About
         </p>
         <h1 className="mt-3 font-display text-[clamp(2.5rem,6vw,4rem)] font-extrabold tracking-[-0.03em] text-archon-navy">
-          {siteConfig.name}
+          {seo.siteName}
         </h1>
         <p className="mt-6 font-body text-base leading-relaxed text-archon-muted">
-          {siteConfig.description} Archon sits at the intersection of luxury
+          {seo.description} Archon sits at the intersection of luxury
           wellness, modern aesthetics, and performance culture — built for
           people who treat recovery and optimization as part of the lifestyle.
         </p>

@@ -8,6 +8,7 @@ import { homepageCopy } from "@/config/homepage";
 import { getProductDosageLabel, products } from "@/config/products";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 
 const SLIDE_GAP = 92;
 const { stackSelector } = homepageCopy;
@@ -32,7 +33,7 @@ function StackSelectorStatic() {
               <div className="relative mx-auto aspect-[3/5] w-[72px] md:mx-0">
                 <Image
                   src={product.image}
-                  alt={`${getProductLabel(product)} ${getProductDosageLabel(product)}`}
+                  alt={getProductImageAlt(product)}
                   fill
                   className="object-contain"
                   sizes="72px"
@@ -200,7 +201,7 @@ export function StackSelector() {
                     />
                     <Image
                       src={product.image}
-                      alt={`${getProductLabel(product)} ${getProductDosageLabel(product)}`}
+                      alt={getProductImageAlt(product)}
                       fill
                       className="object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
                       sizes="180px"

@@ -1,15 +1,18 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 import { formatCoaPurity, getCoaByProductId, isCoaExempt } from "@/config/coa";
 import { getProductDosageLabel, products } from "@/config/products";
-import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { ProductName } from "@/components/ui/ProductName";
 
-export const metadata: Metadata = {
-  title: "COA Library",
-  description: `Certificate of analysis library — proof and verification for ${siteConfig.name} compounds.`,
-};
+export const metadata = createPageMetadata({
+  title: "COA Library | Certificate of Analysis",
+  description: `Certificate of analysis library — batch verification and purity documentation for ${seo.siteName} research compounds.`,
+  path: "/coa",
+  keywords: ["COA", "certificate of analysis", "peptide purity", "batch verification"],
+});
 
 export default function CoaLibraryPage() {
   return (

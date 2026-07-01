@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "Standards",
-  description: `Quality rules and testing standards for ${siteConfig.name}.`,
-};
+export const metadata = createPageMetadata({
+  title: "Standards | Quality & Testing",
+  description: `Quality rules, testing standards, and purity verification for ${seo.siteName} research peptides.`,
+  path: "/standards",
+});
 
 export default function StandardsPage() {
   return (

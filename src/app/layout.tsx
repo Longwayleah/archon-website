@@ -1,37 +1,20 @@
 import "@/lib/gsap/setup";
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { fontVariables } from "@/config/fonts";
-import { siteConfig } from "@/config/site";
+import { createRootMetadata } from "@/lib/seo/metadata";
+import { siteJsonLdGraph } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Providers } from "@/providers";
 import { SiteShell } from "@/components/layout/SiteShell";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
-  openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: "en_US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export const metadata = createRootMetadata();
 
 export const viewport: Viewport = {
-  themeColor: "#020408",
+  themeColor: "#0b1f3a",
   width: "device-width",
   initialScale: 1,
-  colorScheme: "dark",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -40,11 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${fontVariables} h-full antialiased`}
-    >
+    <html lang="en" className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-archon-black">
+        <JsonLd data={siteJsonLdGraph()} />
         <Providers>
           <SiteShell>{children}</SiteShell>
         </Providers>

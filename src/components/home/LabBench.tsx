@@ -8,6 +8,7 @@ import { homepageCopy } from "@/config/homepage";
 import { getProductDosageLabel, products } from "@/config/products";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 
 const { labBench } = homepageCopy;
 
@@ -69,7 +70,7 @@ export function LabBench() {
                 <div className="relative mx-auto aspect-[3/5] w-[72%]">
                   <Image
                     src={product.image}
-                    alt={`${getProductLabel(product)} ${getProductDosageLabel(product)}`}
+                    alt={getProductImageAlt(product)}
                     fill
                     className="relative z-[1] object-contain drop-shadow-[0_20px_40px_rgba(11,31,58,0.22)]"
                     sizes="180px"

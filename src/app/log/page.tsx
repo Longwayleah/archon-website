@@ -1,12 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "Log",
-  description: `Sign in to your ${siteConfig.name} account.`,
-};
+export const metadata = createPageMetadata({
+  title: "Sign In",
+  description: `Sign in to your ${seo.siteName} account.`,
+  path: "/log",
+  noIndex: true,
+});
 
 export default function LogPage() {
   return (

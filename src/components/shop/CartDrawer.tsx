@@ -11,6 +11,7 @@ import {
 import { BuyAllCheckout } from "@/components/shop/BuyAllCheckout";
 import { formatPrice } from "@/lib/commerce/format";
 import { getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 
@@ -143,7 +144,7 @@ export function CartDrawer() {
                       <div className="relative h-20 w-20 shrink-0">
                         <Image
                           src={line.product.image}
-                          alt={getProductLabel(line.product)}
+                          alt={getProductImageAlt(line.product)}
                           fill
                           className="object-contain"
                           sizes="80px"

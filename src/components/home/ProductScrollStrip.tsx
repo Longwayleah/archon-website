@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap/register";
 import { getProductDosageLabel, products } from "@/config/products";
 import { Container } from "@/components/ui/Container";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export function ProductScrollStrip() {
@@ -72,7 +73,7 @@ export function ProductScrollStrip() {
             <div className="relative mx-auto aspect-square w-full max-w-[200px] transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
               <Image
                 src={product.image}
-                alt={getProductLabel(product)}
+                alt={getProductImageAlt(product)}
                 fill
                 className="object-contain"
                 sizes="200px"

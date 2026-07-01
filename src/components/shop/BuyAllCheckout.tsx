@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { ResolvedCartLine } from "@/store/useCartStore";
 import { formatPrice } from "@/lib/commerce/format";
 import { getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 
@@ -87,7 +88,7 @@ export function BuyAllCheckout({
             <div className="relative h-24 w-24 shrink-0">
               <Image
                 src={current.product.image}
-                alt={getProductLabel(current.product)}
+                alt={getProductImageAlt(current.product)}
                 fill
                 className="object-contain"
                 sizes="96px"

@@ -9,6 +9,7 @@ import { featuredProducts } from "@/config/products";
 import { images } from "@/config/assets";
 import { Container } from "@/components/ui/Container";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
+import { getProductImageAlt } from "@/lib/seo/product";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useAppStore } from "@/store/useAppStore";
 
@@ -312,7 +313,7 @@ export function FeaturedSpotlight() {
                     <div className="relative h-full w-full max-w-full">
                       <Image
                         src={product.image}
-                        alt={getProductLabel(product)}
+                        alt={getProductImageAlt(product)}
                         fill
                         className="object-contain object-center"
                         sizes="(max-width: 768px) 94vw, 820px"

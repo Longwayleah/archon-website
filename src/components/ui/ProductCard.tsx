@@ -6,6 +6,7 @@ import {
   getStartingPrice,
   isProductPurchasable,
 } from "@/config/products";
+import { getProductImageAlt } from "@/lib/seo/product";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
 import { formatPrice, formatPriceFrom } from "@/lib/commerce/format";
@@ -27,6 +28,7 @@ export function ProductCard({
   const purchasable = isProductPurchasable(product);
   const startingPrice = getStartingPrice(product);
   const dosageLabel = getProductDosageLabel(product);
+  const imageAlt = getProductImageAlt(product);
 
   return (
     <article
@@ -47,7 +49,7 @@ export function ProductCard({
             <div className="relative h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]">
               <Image
                 src={product.image}
-                alt={`${getProductLabel(product)} ${dosageLabel}`}
+                alt={imageAlt}
                 fill
                 className="relative z-[1] object-contain drop-shadow-[0_20px_40px_rgba(11,31,58,0.22)]"
                 sizes="(max-width: 768px) 50vw, 220px"

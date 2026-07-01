@@ -1,12 +1,14 @@
-import type { Metadata } from "next";
-import { siteConfig } from "@/config/site";
+import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
 import { faqItems } from "@/config/faq";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "FAQ",
-  description: `Frequently asked questions about ${siteConfig.name} peptides, COAs, and orders.`,
-};
+export const metadata = createPageMetadata({
+  title: "FAQ | Research Peptide Questions",
+  description: `Frequently asked questions about ${seo.siteName} research peptides, COAs, orders, and compliance.`,
+  path: "/faq",
+});
 
 export default function FaqPage() {
   return (

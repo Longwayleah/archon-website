@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Journal",
-  description: "Stories on wellness, performance, and the Archon lifestyle.",
-};
+  description:
+    "Stories on research, performance, and the Archon Peptide lifestyle — education and insights for the modern protocol.",
+  path: "/journal",
+});
 
 export default function JournalPage() {
   return (

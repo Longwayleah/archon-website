@@ -1,10 +1,11 @@
 export const siteConfig = {
   name: "Archon",
+  brandName: "Archon Peptide",
   tagline: "Elevated wellness. Refined performance.",
   description:
-    "Premium peptide supplements for vitality, confidence, and modern wellness.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://archon.com",
-  ogImage: "/og.jpg",
+    "Premium research peptides engineered with purpose, precision, and performance.",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://archonpeptide.com",
+  ogImage: "/opengraph-image",
   links: {
     instagram: "https://instagram.com/archonpeptides",
     email: "peptidesarchon@gmail.com",

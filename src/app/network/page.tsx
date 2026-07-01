@@ -1,12 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { seo } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "Network",
-  description: `Partners, affiliates, and collaborators in the ${siteConfig.name} network.`,
-};
+export const metadata = createPageMetadata({
+  title: "Network | Partners & Collaborators",
+  description: `Partners, affiliates, and collaborators in the ${seo.siteName} network.`,
+  path: "/network",
+});
 
 export default function NetworkPage() {
   return (

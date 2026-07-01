@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { Container } from "@/components/ui/Container";
 
-export const metadata: Metadata = {
-  title: "Science",
-  description: "The science behind Archon peptide formulations.",
-};
+export const metadata = createPageMetadata({
+  title: "Science | Peptide Research",
+  description:
+    "The science behind Archon Peptide research compounds — formulation integrity, purity standards, and compound education.",
+  path: "/science",
+});
 
 export default function SciencePage() {
   return (

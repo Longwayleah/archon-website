@@ -1,12 +1,15 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { products } from "@/config/products";
 import { Container } from "@/components/ui/Container";
 import { ProductCard } from "@/components/ui/ProductCard";
 
-export const metadata: Metadata = {
-  title: "Shop",
-  description: "Explore the Archon peptide collection.",
-};
+export const metadata = createPageMetadata({
+  title: "Shop Premium Research Peptides",
+  description:
+    "Explore the Archon Peptide collection — premium research peptides including retatrutide, tirzepatide, MOTS-C, Semax, NAD+, and more.",
+  path: "/shop",
+  keywords: ["shop research peptides", "Archon Peptide shop", "buy research compounds"],
+});
 
 export default function ShopPage() {
   return (
