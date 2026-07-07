@@ -1,3 +1,5 @@
+import type { ProductCollection } from "@/config/collections";
+
 export interface ProductVariant {
   id: string;
   dosage: string;
@@ -15,6 +17,7 @@ export interface Product {
   descriptor: string;
   image: string;
   featured?: boolean;
+  collection: ProductCollection;
   /** Hide strength/mg labeling — e.g. proprietary blends */
   hideDosage?: boolean;
   variants: ProductVariant[];
@@ -31,6 +34,7 @@ export const products: Product[] = [
       "Metabolic momentum for body composition, energy, and everyday vitality.",
     image: "/products/accelerate.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "20mg",
@@ -49,6 +53,7 @@ export const products: Product[] = [
       "Next-level metabolic support for composition, stamina, and sustained energy.",
     image: "/products/apex.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "20mg",
@@ -67,6 +72,7 @@ export const products: Product[] = [
       "Clean energy and metabolic drive — built for performance from the inside out.",
     image: "/products/ascend.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "20mg",
@@ -84,6 +90,7 @@ export const products: Product[] = [
     descriptor: "Mental clarity and sharp focus for high-output days.",
     image: "/products/focus.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "10mg",
@@ -102,6 +109,7 @@ export const products: Product[] = [
       "Radiance and recovery support for skin, vitality, and daily performance.",
     image: "/products/glow.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "70mg",
@@ -119,6 +127,7 @@ export const products: Product[] = [
     descriptor: "Faster bounce-back for training, travel, and active living.",
     image: "/products/recover.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "20mg",
@@ -136,6 +145,7 @@ export const products: Product[] = [
     descriptor: "Foundational energy and longevity support at the cellular level.",
     image: "/products/revive.png",
     featured: true,
+    collection: "core",
     variants: [
       {
         id: "500mg",
@@ -155,12 +165,49 @@ export const products: Product[] = [
     image: "/products/sculpt.png",
     featured: true,
     hideDosage: true,
+    collection: "core",
     variants: [
       {
         id: "default",
         dosage: "",
         price: 175,
         squareCheckoutUrl: "https://square.link/u/OMyISGxO",
+      },
+    ],
+  },
+  {
+    id: "oxytocin",
+    name: "Connect",
+    subtitle: "Oxytocin",
+    slug: "oxytocin",
+    descriptor:
+      "Bonding and emotional connection — support for intimacy, trust, and closeness.",
+    image: "/products/connect.png",
+    collection: "intimacy",
+    variants: [
+      {
+        id: "10mg",
+        dosage: "10 mg",
+        price: 125,
+        squareCheckoutUrl: "https://square.link/u/JyAIJ2g4",
+      },
+    ],
+  },
+  {
+    id: "pt-141",
+    name: "Desire",
+    subtitle: "PT-141",
+    slug: "pt-141",
+    descriptor:
+      "Confidence and presence — formulated for connection, arousal, and intimate vitality.",
+    image: "/products/desire.png",
+    collection: "intimacy",
+    variants: [
+      {
+        id: "10mg",
+        dosage: "10 mg",
+        price: 125,
+        squareCheckoutUrl: "https://square.link/u/ZVbtK3uv",
       },
     ],
   },

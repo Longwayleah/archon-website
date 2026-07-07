@@ -52,7 +52,7 @@ export function ProductCard({
                 alt={imageAlt}
                 fill
                 className="relative z-[1] object-contain drop-shadow-[0_20px_40px_rgba(11,31,58,0.22)]"
-                sizes="(max-width: 768px) 50vw, 220px"
+                sizes="(max-width: 639px) 44vw, (max-width: 1024px) 50vw, 220px"
                 priority={priority}
               />
             </div>
