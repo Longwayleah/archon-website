@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  notifyWelcomeSignup,
+  handleWelcomeSignup,
   validateWelcomeSignup,
 } from "@/lib/email/welcome-signup";
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    await notifyWelcomeSignup({
+    await handleWelcomeSignup({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       ageConfirmed,
