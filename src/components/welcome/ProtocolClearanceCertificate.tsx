@@ -83,15 +83,15 @@ export function ProtocolClearanceCertificate({
         <p className="font-body text-[10px] uppercase tracking-[0.28em] text-archon-navy/45">
           Authorization code
         </p>
-        <div className="mt-3 flex items-center justify-between gap-4">
-          <p className="font-display text-[clamp(1.75rem,5vw,2.25rem)] font-extrabold tracking-[0.12em] text-archon-navy">
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <p className="min-w-0 font-display text-[clamp(1.125rem,4vw,1.75rem)] font-extrabold tracking-[0.06em] text-archon-navy sm:tracking-[0.1em]">
             {welcomeOffer.codeLabel}
           </p>
           <button
             type="button"
             onClick={onCopy}
             className={cn(
-              "rounded-full border border-archon-navy/15 px-4 py-2 font-body text-[10px] uppercase tracking-[0.18em] text-archon-navy transition-colors hover:border-archon-navy/35",
+              "w-full shrink-0 rounded-full border border-archon-navy/15 px-4 py-2 font-body text-[10px] uppercase tracking-[0.18em] text-archon-navy transition-colors hover:border-archon-navy/35 sm:w-auto",
               copied && "border-archon-navy bg-archon-navy text-white",
             )}
           >

@@ -175,7 +175,7 @@ export function WelcomeCaptureModal() {
               <div className="grid gap-4">
                 <div>
                   <label htmlFor={firstNameId} className="sr-only">
-                    First name
+                    Full name
                   </label>
                   <input
                     id={firstNameId}
@@ -186,7 +186,7 @@ export function WelcomeCaptureModal() {
                     value={firstName}
                     onChange={(event) => setFirstName(event.target.value)}
                     className="protocol-clearance-root__input"
-                    placeholder="First name"
+                    placeholder="Full name"
                   />
                 </div>
 

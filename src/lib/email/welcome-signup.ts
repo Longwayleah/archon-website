@@ -34,7 +34,7 @@ export function validateWelcomeSignup({
   }
 
   if (trimmedName.length < 2) {
-    return { ok: false, error: "Please enter your first name." };
+    return { ok: false, error: "Please enter your full name." };
   }
 
   if (!EMAIL_PATTERN.test(trimmedEmail)) {
@@ -77,7 +77,7 @@ export async function notifyWelcomeSignup({
       subject: `Protocol clearance request — ${name}`,
       html: `
         <h2>New Archon protocol clearance request</h2>
-        <p><strong>First name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Full name:</strong> ${escapeHtml(name)}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>Age 21+ confirmed:</strong> ${ageConfirmed ? "Yes" : "No"}</p>
         <p><strong>Research use acknowledged:</strong> ${researchUseConfirmed ? "Yes" : "No"}</p>

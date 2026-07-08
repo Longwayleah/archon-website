@@ -70,9 +70,9 @@ export function Footer() {
 
         <div className="mt-20 border-t border-archon-white/10 pt-8">
           <p className="max-w-4xl font-body text-xs leading-relaxed text-archon-sand/55">
-            For research and educational purposes only. These statements have not
-            been evaluated by the FDA and are not intended to diagnose, treat,
-            cure, or prevent any disease. Consult a qualified healthcare
+            For research and educational purposes only — not for human
+            consumption. These statements have not been evaluated by the FDA and
+            are not intended to diagnose, treat, cure, or prevent any disease. Consult a qualified healthcare
             professional before use. By accessing this website or purchasing or
             using any products, you agree to release, indemnify, and hold
             harmless Archon, and their respective affiliates, officers, and agents
