@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config/site";
+
 export type FaqItem = {
   id: string;
   question: string;
@@ -39,6 +41,6 @@ export const faqItems: FaqItem[] = [
     id: "support",
     question: "Who can I contact for order or COA questions?",
     answer:
-      "Email us at peptidesarchon@gmail.com. Include your order number for the fastest response.",
+      `Email us at ${siteConfig.links.email}. Include your order number for the fastest response.`,
   },
 ];
