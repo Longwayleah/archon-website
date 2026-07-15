@@ -6,6 +6,7 @@ import { siteJsonLdGraph } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Providers } from "@/providers";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 import "./globals.css";
 
 export const metadata = createRootMetadata();
@@ -29,6 +30,7 @@ export default function RootLayout({
         <Providers>
           <SiteShell>{children}</SiteShell>
         </Providers>
+        <SiteAnalytics />
       </body>
     </html>
   );

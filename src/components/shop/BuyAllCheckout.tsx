@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/commerce/format";
 import { getProductLabel } from "@/components/ui/ProductName";
 import { getProductImageAlt } from "@/lib/seo/product";
 import { Button } from "@/components/ui/Button";
+import { openGatedCheckout } from "@/lib/checkout/gate";
 import { cn } from "@/lib/utils/cn";
 
 type BuyAllCheckoutProps = {
@@ -33,8 +34,13 @@ export function BuyAllCheckout({
   const openSquareCheckout = () => {
     const url = current.variant.squareCheckoutUrl;
     if (!url) return;
-    window.open(url, "_blank", "noopener,noreferrer");
-    setPaidSteps((prev) => ({ ...prev, [step]: true }));
+    void openGatedCheckout({
+      url,
+      cartLabel: current.product.name,
+      mode: "tab",
+    }).then(() => {
+      setPaidSteps((prev) => ({ ...prev, [step]: true }));
+    });
   };
 
   return (

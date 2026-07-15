@@ -10,6 +10,7 @@ import {
 } from "@/store/useCartStore";
 import { BuyAllCheckout } from "@/components/shop/BuyAllCheckout";
 import { formatPrice } from "@/lib/commerce/format";
+import { openGatedCheckout } from "@/lib/checkout/gate";
 import { getProductLabel } from "@/components/ui/ProductName";
 import { getProductImageAlt } from "@/lib/seo/product";
 import { Button } from "@/components/ui/Button";
@@ -220,8 +221,11 @@ export function CartDrawer() {
                             disabled={!line.variant.squareCheckoutUrl}
                             onClick={() => {
                               if (line.variant.squareCheckoutUrl) {
-                                window.location.href =
-                                  line.variant.squareCheckoutUrl;
+                                void openGatedCheckout({
+                                  url: line.variant.squareCheckoutUrl,
+                                  cartLabel: line.product.name,
+                                  mode: "navigate",
+                                });
                               }
                             }}
                           >
@@ -277,7 +281,11 @@ export function CartDrawer() {
                     disabled={!canDirectCheckout}
                     onClick={() => {
                       if (singleLine?.variant.squareCheckoutUrl) {
-                        window.location.href = singleLine.variant.squareCheckoutUrl;
+                        void openGatedCheckout({
+                          url: singleLine.variant.squareCheckoutUrl,
+                          cartLabel: singleLine.product.name,
+                          mode: "navigate",
+                        });
                       }
                     }}
                   >

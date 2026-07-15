@@ -165,29 +165,52 @@ export async function notifyWelcomeSignup({
 async function syncToSuperBot({
   name,
   email,
+  ageConfirmed,
+  researchUseConfirmed,
 }: {
   name: string;
   email: string;
+  ageConfirmed: boolean;
+  researchUseConfirmed: boolean;
 }) {
   const superbotUrl = process.env.ARCHON_SUPERBOT_URL;
   const secret = process.env.WELCOME_FORM_SECRET;
 
   if (!superbotUrl) return;
 
-  await fetch(`${superbotUrl.replace(/\/$/, "")}/api/welcome`, {
+  const response = await fetch(`${superbotUrl.replace(/\/$/, "")}/api/welcome`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       full_name: name,
       email,
       secret,
+      skip_email: true,
+      welcome_code: welcomeOffer.codeLabel,
+      source: "protocol_clearance",
+      metadata: {
+        site: "archonpeptide.com",
+        age_confirmed: ageConfirmed,
+        research_use_confirmed: researchUseConfirmed,
+        discount_code: welcomeOffer.codeLabel,
+      },
     }),
   });
+
+  if (!response.ok) {
+    const body = await response.text();
+    console.error("[welcome-signup] Super Bot sync failed:", response.status, body);
+  }
 }
 
 export async function handleWelcomeSignup(payload: WelcomeSignupPayload) {
   await notifyWelcomeSignup(payload);
-  await syncToSuperBot({ name: payload.name, email: payload.email });
+  await syncToSuperBot({
+    name: payload.name,
+    email: payload.email,
+    ageConfirmed: payload.ageConfirmed,
+    researchUseConfirmed: payload.researchUseConfirmed,
+  });
 }
 
 function escapeHtml(value: string) {

@@ -5,10 +5,13 @@ import { createPortal } from "react-dom";
 import {
   welcomeOffer,
   createClearanceId,
-  readWelcomeCaptureStatus,
+  hasCompletedWelcome,
+  readWelcomeEmail,
   writeWelcomeCaptureStatus,
+  writeWelcomeEmail,
 } from "@/config/welcome";
 import { ProtocolClearanceCertificate } from "@/components/welcome/ProtocolClearanceCertificate";
+import { completeCheckoutEmailGate } from "@/lib/checkout/gate";
 import { useAppStore } from "@/store/useAppStore";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { Button } from "@/components/ui/Button";
@@ -20,6 +23,10 @@ type CapturePhase = "form" | "success";
 
 export function WelcomeCaptureModal() {
   const splashComplete = useAppStore((state) => state.splashComplete);
+  const welcomeForCheckout = useAppStore((state) => state.welcomeForCheckout);
+  const clearWelcomeForCheckout = useAppStore(
+    (state) => state.clearWelcomeForCheckout,
+  );
   const reducedMotion = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -41,19 +48,38 @@ export function WelcomeCaptureModal() {
 
   useEffect(() => {
     setMounted(true);
+    // Clear legacy "Not now" session dismissals — clearance is required.
+    try {
+      sessionStorage.removeItem("archon-welcome-capture-dismissed");
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   useEffect(() => {
-    if (!splashComplete || readWelcomeCaptureStatus()) return;
+    if (!splashComplete || hasCompletedWelcome()) return;
 
     const timer = window.setTimeout(() => {
-      if (!readWelcomeCaptureStatus()) {
+      if (!hasCompletedWelcome()) {
         setIsOpen(true);
       }
     }, OPEN_DELAY_MS);
 
     return () => window.clearTimeout(timer);
   }, [splashComplete]);
+
+  useEffect(() => {
+    if (!welcomeForCheckout) return;
+
+    const existing = readWelcomeEmail();
+    if (existing && hasCompletedWelcome()) {
+      completeCheckoutEmailGate(existing);
+      return;
+    }
+
+    setPhase("form");
+    setIsOpen(true);
+  }, [welcomeForCheckout]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -63,7 +89,7 @@ export function WelcomeCaptureModal() {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && phase === "success") {
-        closeModal("signed-up");
+        finishSuccess();
       }
     };
 
@@ -73,10 +99,17 @@ export function WelcomeCaptureModal() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [isOpen, phase]);
+    // finishSuccess closes over latest email/phase
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, phase, email]);
 
-  const closeModal = (status: "signed-up" | "dismissed") => {
-    writeWelcomeCaptureStatus(status);
+  const finishSuccess = () => {
+    const normalized = email.trim().toLowerCase() || readWelcomeEmail() || "";
+    if (normalized) {
+      completeCheckoutEmailGate(normalized);
+    } else {
+      clearWelcomeForCheckout();
+    }
     setIsOpen(false);
     setError(null);
     setIsSubmitting(false);
@@ -112,9 +145,11 @@ export function WelcomeCaptureModal() {
         return;
       }
 
+      const normalized = email.trim().toLowerCase();
+      writeWelcomeEmail(normalized);
+      writeWelcomeCaptureStatus("signed-up");
       setClearanceId(createClearanceId());
       setPhase("success");
-      writeWelcomeCaptureStatus("signed-up");
     } catch {
       setError("Clearance request failed. Please try again.");
     } finally {
@@ -141,10 +176,13 @@ export function WelcomeCaptureModal() {
           type="button"
           aria-label="Close protocol clearance"
           className="protocol-clearance-root__backdrop"
-          onClick={() => closeModal("signed-up")}
+          onClick={finishSuccess}
         />
       ) : (
-        <div className="protocol-clearance-root__backdrop protocol-clearance-root__backdrop--locked" aria-hidden />
+        <div
+          className="protocol-clearance-root__backdrop protocol-clearance-root__backdrop--locked"
+          aria-hidden
+        />
       )}
 
       <div
@@ -256,14 +294,6 @@ export function WelcomeCaptureModal() {
                 {isSubmitting ? "..." : welcomeOffer.submitLabel}
               </Button>
             </form>
-
-            <button
-              type="button"
-              onClick={() => closeModal("dismissed")}
-              className="mt-4 w-full font-body text-[10px] uppercase tracking-[0.22em] text-archon-navy/40 transition-colors hover:text-archon-navy/70"
-            >
-              {welcomeOffer.dismissLabel}
-            </button>
           </>
         ) : (
           <>
@@ -278,9 +308,9 @@ export function WelcomeCaptureModal() {
             <Button
               type="button"
               className="mt-6 w-full rounded-full bg-archon-navy text-white hover:bg-archon-navy-light"
-              onClick={() => closeModal("signed-up")}
+              onClick={finishSuccess}
             >
-              Continue
+              {welcomeForCheckout ? "Continue to checkout" : "Continue"}
             </Button>
           </>
         )}

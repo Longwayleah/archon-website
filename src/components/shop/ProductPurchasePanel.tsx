@@ -6,6 +6,7 @@ import { isProductPurchasable } from "@/config/products";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { Button } from "@/components/ui/Button";
 import { formatPrice } from "@/lib/commerce/format";
+import { openGatedCheckout } from "@/lib/checkout/gate";
 import { getCartItemCount, useCartStore } from "@/store/useCartStore";
 
 type ProductPurchasePanelProps = {
@@ -136,7 +137,11 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
             disabled={!hasCheckoutLink}
             onClick={() => {
               if (selectedVariant.squareCheckoutUrl) {
-                window.location.href = selectedVariant.squareCheckoutUrl;
+                void openGatedCheckout({
+                  url: selectedVariant.squareCheckoutUrl,
+                  cartLabel: `${product.name} ${selectedVariant.dosage || ""}`.trim(),
+                  mode: "navigate",
+                });
               }
             }}
           >

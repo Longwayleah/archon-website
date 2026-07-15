@@ -5,11 +5,15 @@ interface AppState {
   isLoading: boolean;
   isSplashActive: boolean;
   splashComplete: boolean;
+  /** Checkout requested Protocol Clearance before Square. */
+  welcomeForCheckout: boolean;
   setMenuOpen: (open: boolean) => void;
   toggleMenu: () => void;
   setLoading: (loading: boolean) => void;
   setSplashActive: (active: boolean) => void;
   setSplashComplete: (complete: boolean) => void;
+  requestWelcomeForCheckout: () => void;
+  clearWelcomeForCheckout: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -17,10 +21,13 @@ export const useAppStore = create<AppState>((set) => ({
   isLoading: false,
   isSplashActive: false,
   splashComplete: false,
+  welcomeForCheckout: false,
   setMenuOpen: (open) => set({ isMenuOpen: open }),
   toggleMenu: () => set((s) => ({ isMenuOpen: !s.isMenuOpen })),
   setLoading: (loading) => set({ isLoading: loading }),
   setSplashActive: (active) => set({ isSplashActive: active }),
   setSplashComplete: (complete) =>
     set({ splashComplete: complete, isSplashActive: !complete, isLoading: !complete }),
+  requestWelcomeForCheckout: () => set({ welcomeForCheckout: true }),
+  clearWelcomeForCheckout: () => set({ welcomeForCheckout: false }),
 }));

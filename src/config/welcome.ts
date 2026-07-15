@@ -7,7 +7,6 @@ export const welcomeOffer = {
   headline: "Protocol Clearance",
   subheadline: "10% off your first order.",
   submitLabel: "Continue",
-  dismissLabel: "Not now",
   ageAttestation: "I am 21 or older.",
   researchAttestation:
     "For research and laboratory use only — not for human consumption.",
@@ -19,9 +18,22 @@ export const welcomeOffer = {
 } as const;
 
 export const welcomeCaptureStorageKey = "archon-welcome-capture";
+export const welcomeEmailStorageKey = "archon-welcome-email";
+/** @deprecated Kept so we can clear old "Not now" dismissals when making clearance required. */
 export const welcomeCaptureSessionKey = "archon-welcome-capture-dismissed";
 
-export type WelcomeCaptureStatus = "signed-up" | "dismissed";
+export type WelcomeCaptureStatus = "signed-up";
+
+export function readWelcomeEmail(): string | null {
+  if (typeof window === "undefined") return null;
+  const email = localStorage.getItem(welcomeEmailStorageKey)?.trim().toLowerCase();
+  if (!email || !email.includes("@")) return null;
+  return email;
+}
+
+export function writeWelcomeEmail(email: string) {
+  localStorage.setItem(welcomeEmailStorageKey, email.trim().toLowerCase());
+}
 
 export function readWelcomeCaptureStatus(): WelcomeCaptureStatus | null {
   if (typeof window === "undefined") return null;
@@ -30,21 +42,17 @@ export function readWelcomeCaptureStatus(): WelcomeCaptureStatus | null {
     return "signed-up";
   }
 
-  if (sessionStorage.getItem(welcomeCaptureSessionKey) === "dismissed") {
-    return "dismissed";
-  }
-
   return null;
 }
 
-export function writeWelcomeCaptureStatus(status: WelcomeCaptureStatus) {
-  if (status === "signed-up") {
-    localStorage.setItem(welcomeCaptureStorageKey, "signed-up");
-    sessionStorage.removeItem(welcomeCaptureSessionKey);
-    return;
-  }
+/** Signed up + email on device — required before Square checkout. */
+export function hasCompletedWelcome(): boolean {
+  return readWelcomeCaptureStatus() === "signed-up" && Boolean(readWelcomeEmail());
+}
 
-  sessionStorage.setItem(welcomeCaptureSessionKey, "dismissed");
+export function writeWelcomeCaptureStatus(_status: WelcomeCaptureStatus) {
+  localStorage.setItem(welcomeCaptureStorageKey, "signed-up");
+  sessionStorage.removeItem(welcomeCaptureSessionKey);
 }
 
 export function createClearanceId() {
