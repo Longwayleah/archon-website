@@ -1,13 +1,12 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 /**
  * Site analytics:
- * - Vercel Analytics (always on when deployed to Vercel)
+ * - Vercel Web Analytics (traffic — enable in Vercel project → Analytics)
+ * - Vercel Speed Insights (Core Web Vitals — enable in Vercel project → Speed Insights)
  * - Google Analytics 4 when NEXT_PUBLIC_GA_MEASUREMENT_ID is set (G-XXXXXXXX)
- *
- * In GA4 → Reports → Acquisition → Traffic acquisition you’ll see
- * Google / Instagram / Direct / etc.
  */
 export function SiteAnalytics() {
   const gaId =
@@ -16,6 +15,7 @@ export function SiteAnalytics() {
   return (
     <>
       <Analytics />
+      <SpeedInsights />
       <GoogleAnalytics gaId={gaId} />
     </>
   );

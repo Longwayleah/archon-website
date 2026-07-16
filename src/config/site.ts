@@ -8,7 +8,7 @@ export const siteConfig = {
   ogImage: "/opengraph-image",
   links: {
     instagram: "https://instagram.com/archonpeptides",
-    email: "info@archonpeptide.com",
+    email: "orders@archonpeptide.com",
     shop: "/shop",
   },
 } as const;

@@ -1,4 +1,3 @@
-import { siteConfig } from "@/config/site";
 import { welcomeOffer } from "@/config/welcome";
 
 export type WelcomeSignupPayload = {
@@ -58,7 +57,7 @@ async function sendResendEmail({
 }) {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail =
-    process.env.RESEND_FROM_EMAIL ?? "Archon Peptide <info@archonpeptide.com>";
+    process.env.RESEND_FROM_EMAIL ?? "Archon Peptide <orders@archonpeptide.com>";
 
   if (!apiKey) {
     throw new Error("Email service is not configured.");
@@ -134,7 +133,7 @@ export async function notifyWelcomeSignup({
 }: WelcomeSignupPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const notifyEmail =
-    process.env.WELCOME_NOTIFY_EMAIL ?? siteConfig.links.email;
+    process.env.WELCOME_NOTIFY_EMAIL ?? "info@archonpeptide.com";
 
   if (!apiKey) {
     console.warn(
