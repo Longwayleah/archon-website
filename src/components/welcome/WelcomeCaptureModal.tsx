@@ -35,6 +35,7 @@ export function WelcomeCaptureModal() {
   const [email, setEmail] = useState("");
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [researchUseConfirmed, setResearchUseConfirmed] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -43,6 +44,7 @@ export function WelcomeCaptureModal() {
   const emailId = useId();
   const ageId = useId();
   const researchId = useId();
+  const marketingId = useId();
 
   const canSubmit = ageConfirmed && researchUseConfirmed && !isSubmitting;
 
@@ -135,6 +137,7 @@ export function WelcomeCaptureModal() {
           email,
           ageConfirmed,
           researchUseConfirmed,
+          marketingOptIn,
         }),
       });
 
@@ -276,6 +279,20 @@ export function WelcomeCaptureModal() {
                   <span className="protocol-clearance-root__check-box" aria-hidden />
                   <span className="protocol-clearance-root__check-text">
                     {welcomeOffer.researchAttestation}
+                  </span>
+                </label>
+
+                <label htmlFor={marketingId} className="protocol-clearance-root__check">
+                  <input
+                    id={marketingId}
+                    type="checkbox"
+                    checked={marketingOptIn}
+                    onChange={(event) => setMarketingOptIn(event.target.checked)}
+                    className="protocol-clearance-root__check-input"
+                  />
+                  <span className="protocol-clearance-root__check-box" aria-hidden />
+                  <span className="protocol-clearance-root__check-text">
+                    {welcomeOffer.marketingOptInAttestation}
                   </span>
                 </label>
               </fieldset>

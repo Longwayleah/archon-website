@@ -10,6 +10,8 @@ export const welcomeOffer = {
   ageAttestation: "I am 21 or older.",
   researchAttestation:
     "For research and laboratory use only — not for human consumption.",
+  marketingOptInAttestation:
+    "I'd like to receive emails about new products, offers, and updates.",
   certificateTitle: "Protocol Clearance",
   certificateSubtitle: "Access issued",
   certificateStatus: "Verified",

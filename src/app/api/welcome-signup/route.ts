@@ -11,17 +11,20 @@ export async function POST(request: Request) {
       email?: string;
       ageConfirmed?: boolean;
       researchUseConfirmed?: boolean;
+      marketingOptIn?: boolean;
     };
     const name = body.name ?? "";
     const email = body.email ?? "";
     const ageConfirmed = body.ageConfirmed === true;
     const researchUseConfirmed = body.researchUseConfirmed === true;
+    const marketingOptIn = body.marketingOptIn === true;
 
     const validation = validateWelcomeSignup({
       name,
       email,
       ageConfirmed,
       researchUseConfirmed,
+      marketingOptIn,
     });
     if (!validation.ok) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
@@ -32,6 +35,7 @@ export async function POST(request: Request) {
       email: email.trim().toLowerCase(),
       ageConfirmed,
       researchUseConfirmed,
+      marketingOptIn,
     });
 
     return NextResponse.json({ ok: true });

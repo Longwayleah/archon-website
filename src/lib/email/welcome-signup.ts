@@ -5,6 +5,7 @@ export type WelcomeSignupPayload = {
   email: string;
   ageConfirmed: boolean;
   researchUseConfirmed: boolean;
+  marketingOptIn: boolean;
 };
 
 export type WelcomeSignupResult =
@@ -130,6 +131,7 @@ export async function notifyWelcomeSignup({
   email,
   ageConfirmed,
   researchUseConfirmed,
+  marketingOptIn,
 }: WelcomeSignupPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const notifyEmail =
@@ -155,6 +157,7 @@ export async function notifyWelcomeSignup({
       <p><strong>Email:</strong> ${escapeHtml(email)}</p>
       <p><strong>Age 21+ confirmed:</strong> ${ageConfirmed ? "Yes" : "No"}</p>
       <p><strong>Research use acknowledged:</strong> ${researchUseConfirmed ? "Yes" : "No"}</p>
+      <p><strong>Marketing emails opted in:</strong> ${marketingOptIn ? "Yes" : "No"}</p>
       <p><strong>Authorization code issued:</strong> ${welcomeOffer.code} (${welcomeOffer.discountPercent}% off)</p>
       <p><em>Submitted from archonpeptide.com</em></p>
     `,
@@ -166,12 +169,8 @@ async function syncToSuperBot({
   email,
   ageConfirmed,
   researchUseConfirmed,
-}: {
-  name: string;
-  email: string;
-  ageConfirmed: boolean;
-  researchUseConfirmed: boolean;
-}) {
+  marketingOptIn,
+}: WelcomeSignupPayload) {
   const superbotUrl = process.env.ARCHON_SUPERBOT_URL;
   const secret = process.env.WELCOME_FORM_SECRET;
 
@@ -191,6 +190,7 @@ async function syncToSuperBot({
         site: "archonpeptide.com",
         age_confirmed: ageConfirmed,
         research_use_confirmed: researchUseConfirmed,
+        marketing_opt_in: marketingOptIn,
         discount_code: welcomeOffer.codeLabel,
       },
     }),
@@ -204,12 +204,7 @@ async function syncToSuperBot({
 
 export async function handleWelcomeSignup(payload: WelcomeSignupPayload) {
   await notifyWelcomeSignup(payload);
-  await syncToSuperBot({
-    name: payload.name,
-    email: payload.email,
-    ageConfirmed: payload.ageConfirmed,
-    researchUseConfirmed: payload.researchUseConfirmed,
-  });
+  await syncToSuperBot(payload);
 }
 
 function escapeHtml(value: string) {
