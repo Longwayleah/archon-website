@@ -1,5 +1,6 @@
 import {
   hasCompletedWelcome,
+  isProtocolClearanceBypassed,
   readWelcomeEmail,
   writeWelcomeCaptureStatus,
   writeWelcomeEmail,
@@ -25,6 +26,10 @@ export function ensureCheckoutEmail(): Promise<string> {
   const existing = readWelcomeEmail();
   if (existing && hasCompletedWelcome()) {
     return Promise.resolve(existing);
+  }
+
+  if (isProtocolClearanceBypassed()) {
+    return Promise.resolve(existing ?? "dev@archonpeptide.com");
   }
 
   return new Promise((resolve, reject) => {

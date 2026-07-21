@@ -26,6 +26,11 @@ export const welcomeCaptureSessionKey = "archon-welcome-capture-dismissed";
 
 export type WelcomeCaptureStatus = "signed-up";
 
+/** Local editing — set NEXT_PUBLIC_SKIP_PROTOCOL_CLEARANCE=true in .env.local */
+export function isProtocolClearanceBypassed() {
+  return process.env.NEXT_PUBLIC_SKIP_PROTOCOL_CLEARANCE === "true";
+}
+
 export function readWelcomeEmail(): string | null {
   if (typeof window === "undefined") return null;
   const email = localStorage.getItem(welcomeEmailStorageKey)?.trim().toLowerCase();
@@ -49,6 +54,7 @@ export function readWelcomeCaptureStatus(): WelcomeCaptureStatus | null {
 
 /** Signed up + email on device — required before Square checkout. */
 export function hasCompletedWelcome(): boolean {
+  if (isProtocolClearanceBypassed()) return true;
   return readWelcomeCaptureStatus() === "signed-up" && Boolean(readWelcomeEmail());
 }
 
