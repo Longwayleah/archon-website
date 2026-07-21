@@ -31,7 +31,7 @@ export const products: Product[] = [
     subtitle: "Tirzepatide",
     slug: "tirzepatide",
     descriptor:
-      "Metabolic momentum for body composition, energy, and everyday vitality.",
+      "Tirzepatide — metabolic momentum for body composition, energy, and everyday vitality.",
     image: "/products/accelerate.png",
     featured: true,
     collection: "core",
@@ -50,7 +50,7 @@ export const products: Product[] = [
     subtitle: "Retatrutide",
     slug: "retatrutide",
     descriptor:
-      "Next-level metabolic support for composition, stamina, and sustained energy.",
+      "Retatrutide — next-level metabolic support for composition, stamina, and sustained energy.",
     image: "/products/apex.png",
     featured: true,
     collection: "core",
@@ -69,7 +69,7 @@ export const products: Product[] = [
     subtitle: "MOTS-c",
     slug: "mots-c",
     descriptor:
-      "Clean energy and metabolic drive — built for performance from the inside out.",
+      "MOTS-c — clean energy and metabolic drive, built for performance from the inside out.",
     image: "/products/ascend.png",
     featured: true,
     collection: "core",
@@ -83,11 +83,30 @@ export const products: Product[] = [
     ],
   },
   {
+    id: "dsip",
+    name: "Drift",
+    subtitle: "DSIP",
+    slug: "dsip",
+    descriptor:
+      "DSIP — restful sleep and overnight recovery support for deep rest and circadian balance.",
+    image: "/products/drift.png",
+    featured: true,
+    collection: "core",
+    variants: [
+      {
+        id: "10mg",
+        dosage: "10 mg",
+        price: 55,
+        squareCheckoutUrl: "https://square.link/u/TLISwPif",
+      },
+    ],
+  },
+  {
     id: "semax",
     name: "Focus",
     subtitle: "Semax",
     slug: "semax",
-    descriptor: "Mental clarity and sharp focus for high-output days.",
+    descriptor: "Semax — mental clarity and sharp focus for high-output days.",
     image: "/products/focus.png",
     featured: true,
     collection: "core",
@@ -103,10 +122,10 @@ export const products: Product[] = [
   {
     id: "glow",
     name: "Glow",
-    subtitle: "Glow blend",
+    subtitle: "TB-500 + BPC-157 + GHK-Cu",
     slug: "glow",
     descriptor:
-      "Radiance and recovery support for skin, vitality, and daily performance.",
+      "Glow blend — TB-500, BPC-157, and GHK-Cu for radiance, recovery, skin vitality, and daily performance.",
     image: "/products/glow.png",
     featured: true,
     collection: "core",
@@ -122,9 +141,10 @@ export const products: Product[] = [
   {
     id: "bpc-tb500",
     name: "Recover",
-    subtitle: "Wolverine",
+    subtitle: "BPC-157 + TB-500",
     slug: "bpc-tb500",
-    descriptor: "Faster bounce-back for training, travel, and active living.",
+    descriptor:
+      "Wolverine — BPC-157 and TB-500 for faster bounce-back from training, travel, and active living.",
     image: "/products/recover.png",
     featured: true,
     collection: "core",
@@ -142,7 +162,8 @@ export const products: Product[] = [
     name: "Revive",
     subtitle: "NAD+",
     slug: "nad-plus",
-    descriptor: "Foundational energy and longevity support at the cellular level.",
+    descriptor:
+      "NAD+ — foundational energy and longevity support at the cellular level.",
     image: "/products/revive.png",
     featured: true,
     collection: "core",
@@ -161,7 +182,7 @@ export const products: Product[] = [
     subtitle: "Lemon X",
     slug: "lemon-x",
     descriptor:
-      "Refined contour support for stubborn areas — chin, waist, thighs, and arms.",
+      "Lemon X — refined contour support for stubborn areas, including chin, waist, thighs, and arms.",
     image: "/products/sculpt.png",
     featured: true,
     hideDosage: true,
@@ -181,7 +202,7 @@ export const products: Product[] = [
     subtitle: "Oxytocin",
     slug: "oxytocin",
     descriptor:
-      "Bonding and emotional connection — support for intimacy, trust, and closeness.",
+      "Oxytocin — bonding and emotional connection for intimacy, trust, and closeness.",
     image: "/products/connect.png",
     collection: "intimacy",
     variants: [
@@ -199,7 +220,7 @@ export const products: Product[] = [
     subtitle: "PT-141",
     slug: "pt-141",
     descriptor:
-      "Confidence and presence — formulated for connection, arousal, and intimate vitality.",
+      "PT-141 — confidence and presence for connection, arousal, and intimate vitality.",
     image: "/products/desire.png",
     collection: "intimacy",
     variants: [
