@@ -1,12 +1,14 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 
 /**
  * Site analytics:
  * - Vercel Web Analytics (traffic — enable in Vercel project → Analytics)
  * - Vercel Speed Insights (Core Web Vitals — enable in Vercel project → Speed Insights)
  * - Google Analytics 4 when NEXT_PUBLIC_GA_MEASUREMENT_ID is set (G-XXXXXXXX)
+ * - Meta Pixel when NEXT_PUBLIC_META_PIXEL_ID is set
  */
 export function SiteAnalytics() {
   const gaId =
@@ -17,6 +19,7 @@ export function SiteAnalytics() {
       <Analytics />
       <SpeedInsights />
       <GoogleAnalytics gaId={gaId} />
+      <MetaPixel />
     </>
   );
 }
