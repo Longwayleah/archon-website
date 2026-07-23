@@ -5,6 +5,8 @@ type SquarePayment = {
   status?: string;
   buyer_email_address?: string;
   receipt_email?: string;
+  order_id?: string;
+  customer_id?: string;
 };
 
 type SquareWebhookEvent = {
@@ -71,13 +73,11 @@ export function parseSquarePaymentEvent(body: string) {
     payment.receipt_email?.trim().toLowerCase() ||
     "";
 
-  if (!email.includes("@")) {
-    return null;
-  }
-
   return {
     paymentId: payment.id,
-    email,
+    email: email.includes("@") ? email : "",
+    orderId: payment.order_id || null,
+    customerId: payment.customer_id || null,
     eventType: event.type,
   };
 }

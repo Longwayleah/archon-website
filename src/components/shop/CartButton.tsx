@@ -18,7 +18,7 @@ export function CartButton({ className, onDark = false }: CartButtonProps) {
       type="button"
       aria-label={`Open protocol${itemCount ? `, ${itemCount} items` : ""}`}
       className={cn(
-        "group inline-flex items-baseline gap-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors md:text-[9px] lg:text-[10px]",
+        "group inline-flex min-h-11 items-center gap-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors md:text-[9px] lg:text-[10px]",
         onDark
           ? "text-white/65 hover:text-white"
           : "text-archon-black/70 hover:text-archon-black",

@@ -3,6 +3,7 @@ import {
   LoyaltyStoreUnavailableError,
   processLoyaltyPayment,
 } from "@/lib/loyalty/process-payment";
+import { resolvePaymentCustomerEmail } from "@/lib/square/client";
 import {
   parseSquarePaymentEvent,
   verifySquareWebhookSignature,
@@ -41,9 +42,31 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, ignored: true });
   }
 
+  const email =
+    payment.email ||
+    (await resolvePaymentCustomerEmail({
+      paymentId: payment.paymentId,
+      emailFromEvent: payment.email,
+      orderId: payment.orderId,
+      customerId: payment.customerId,
+    }));
+
+  if (!email) {
+    console.warn(
+      "[square-webhook] COMPLETED payment without resolvable email",
+      payment.paymentId,
+    );
+    return NextResponse.json({
+      ok: true,
+      ignored: true,
+      reason: "no_email",
+      paymentId: payment.paymentId,
+    });
+  }
+
   try {
     const result = await processLoyaltyPayment({
-      email: payment.email,
+      email,
       paymentId: payment.paymentId,
     });
 

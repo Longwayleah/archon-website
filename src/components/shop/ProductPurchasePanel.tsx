@@ -11,9 +11,14 @@ import { getCartItemCount, useCartStore } from "@/store/useCartStore";
 
 type ProductPurchasePanelProps = {
   product: Product;
+  /** Render inside a parent card without its own border */
+  embedded?: boolean;
 };
 
-export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
+export function ProductPurchasePanel({
+  product,
+  embedded = false,
+}: ProductPurchasePanelProps) {
   const cartItems = useCartStore((state) => state.items);
   const hasCartItems = getCartItemCount(cartItems) > 0;
   const purchasable = isProductPurchasable(product);
@@ -27,9 +32,13 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
     [product.variants, selectedVariantId],
   );
 
+  const panelClassName = embedded
+    ? "p-5 sm:p-6 md:p-8"
+    : "mt-10 rounded-2xl border border-archon-black/10 bg-white/70 p-5 sm:p-6 md:p-8";
+
   if (!purchasable || !selectedVariant) {
     return (
-      <div className="mt-10 rounded-2xl border border-archon-black/10 bg-white/70 p-6">
+      <div className={panelClassName}>
         <p className="font-body text-sm text-archon-muted">
           Pricing and checkout for this protocol are coming soon.
         </p>
@@ -41,19 +50,19 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
   const hasCheckoutLink = Boolean(selectedVariant.squareCheckoutUrl);
 
   return (
-    <div className="mt-10 rounded-2xl border border-archon-black/10 bg-white/70 p-6 md:p-8">
+    <div className={panelClassName}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-body text-[11px] uppercase tracking-[0.24em] text-archon-navy/50">
             Price
           </p>
-          <p className="mt-2 font-display text-4xl font-extrabold tracking-[-0.03em] text-archon-navy">
+          <p className="mt-2 font-body text-3xl font-semibold tabular-nums tracking-normal text-archon-navy md:text-4xl md:font-display md:font-extrabold md:tracking-[-0.03em]">
             {formatPrice(selectedVariant.price)}
           </p>
         </div>
 
         {product.variants.length > 1 ? (
-          <div className="min-w-[180px]">
+          <div className="w-full min-w-0 sm:w-auto sm:min-w-[180px] sm:max-w-xs">
             <label
               htmlFor={`variant-${product.id}`}
               className="font-body text-[11px] uppercase tracking-[0.24em] text-archon-navy/50"
@@ -85,7 +94,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
             <button
               type="button"
               aria-label="Decrease quantity"
-              className="flex h-12 w-12 items-center justify-center font-body text-lg text-archon-navy transition-colors hover:text-archon-black"
+              className="flex h-12 w-12 items-center justify-center font-body text-lg text-archon-navy transition-colors hover:text-archon-navy/70"
               onClick={() => setQuantity((value) => Math.max(1, value - 1))}
             >
               −
@@ -96,7 +105,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
             <button
               type="button"
               aria-label="Increase quantity"
-              className="flex h-12 w-12 items-center justify-center font-body text-lg text-archon-navy transition-colors hover:text-archon-black"
+              className="flex h-12 w-12 items-center justify-center font-body text-lg text-archon-navy transition-colors hover:text-archon-navy/70"
               onClick={() => setQuantity((value) => value + 1)}
             >
               +
@@ -104,11 +113,11 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
           </div>
         </div>
 
-        <div className="ml-auto text-right">
+        <div className="w-full text-left sm:ml-auto sm:w-auto sm:text-right">
           <p className="font-body text-[11px] uppercase tracking-[0.24em] text-archon-navy/50">
             Subtotal
           </p>
-          <p className="mt-2 font-display text-2xl font-extrabold tracking-[-0.02em] text-archon-navy">
+          <p className="mt-2 font-body text-xl font-semibold tabular-nums tracking-normal text-archon-navy md:font-display md:text-2xl md:font-extrabold md:tracking-[-0.02em]">
             {formatPrice(lineTotal)}
           </p>
         </div>

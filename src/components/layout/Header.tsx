@@ -300,7 +300,7 @@ export function Header() {
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-primary-nav"
-                className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
+                className="flex h-11 w-11 flex-col items-center justify-center gap-1.5"
                 onClick={toggleMenu}
               >
                 <span

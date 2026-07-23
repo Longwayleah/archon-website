@@ -31,7 +31,7 @@ export const products: Product[] = [
     subtitle: "Tirzepatide",
     slug: "tirzepatide",
     descriptor:
-      "Tirzepatide — metabolic momentum for body composition, energy, and everyday vitality.",
+      "Accelerate contains tirzepatide, a dual GIP and GLP-1 receptor agonist studied for metabolic signaling.",
     image: "/products/accelerate.png",
     featured: true,
     collection: "core",
@@ -50,7 +50,7 @@ export const products: Product[] = [
     subtitle: "Retatrutide",
     slug: "retatrutide",
     descriptor:
-      "Retatrutide — next-level metabolic support for composition, stamina, and sustained energy.",
+      "Apex contains retatrutide, a triple receptor agonist investigated for its unique three-pathway mechanism.",
     image: "/products/apex.png",
     featured: true,
     collection: "core",
@@ -69,7 +69,7 @@ export const products: Product[] = [
     subtitle: "MOTS-c",
     slug: "mots-c",
     descriptor:
-      "MOTS-c — clean energy and metabolic drive, built for performance from the inside out.",
+      "Ascend contains MOTS-c, a mitochondrial-derived peptide studied for metabolic adaptation and cellular energy regulation.",
     image: "/products/ascend.png",
     featured: true,
     collection: "core",
@@ -88,7 +88,7 @@ export const products: Product[] = [
     subtitle: "DSIP",
     slug: "dsip",
     descriptor:
-      "DSIP — restful sleep and overnight recovery support for deep rest and circadian balance.",
+      "Drift contains DSIP, a neuropeptide studied for sleep physiology and circadian biology.",
     image: "/products/drift.png",
     featured: true,
     collection: "core",
@@ -106,7 +106,8 @@ export const products: Product[] = [
     name: "Focus",
     subtitle: "Semax",
     slug: "semax",
-    descriptor: "Semax — mental clarity and sharp focus for high-output days.",
+    descriptor:
+      "Focus contains Semax, a synthetic peptide studied for neuronal signaling and central nervous system research.",
     image: "/products/focus.png",
     featured: true,
     collection: "core",
@@ -125,7 +126,7 @@ export const products: Product[] = [
     subtitle: "TB-500 + BPC-157 + GHK-Cu",
     slug: "glow",
     descriptor:
-      "Glow blend — TB-500, BPC-157, and GHK-Cu for radiance, recovery, skin vitality, and daily performance.",
+      "Glow combines BPC-157, TB-500, and GHK-Cu into a regenerative research blend for complementary biological pathways.",
     image: "/products/glow.png",
     featured: true,
     collection: "core",
@@ -144,7 +145,7 @@ export const products: Product[] = [
     subtitle: "BPC-157 + TB-500",
     slug: "bpc-tb500",
     descriptor:
-      "Wolverine — BPC-157 and TB-500 for faster bounce-back from training, travel, and active living.",
+      "Recover combines regenerative peptides to investigate connective tissue biology, structural integrity, and tissue remodeling.",
     image: "/products/recover.png",
     featured: true,
     collection: "core",
@@ -163,7 +164,7 @@ export const products: Product[] = [
     subtitle: "NAD+",
     slug: "nad-plus",
     descriptor:
-      "NAD+ — foundational energy and longevity support at the cellular level.",
+      "Revive contains NAD+, a coenzyme central to cellular energy production and metabolic function.",
     image: "/products/revive.png",
     featured: true,
     collection: "core",
@@ -182,7 +183,7 @@ export const products: Product[] = [
     subtitle: "Lemon X",
     slug: "lemon-x",
     descriptor:
-      "Lemon X — refined contour support for stubborn areas, including chin, waist, thighs, and arms.",
+      "Sculpt combines riboflavin, lecithin, and bromelain into a metabolic research blend for energy regulation and body composition.",
     image: "/products/sculpt.png",
     featured: true,
     hideDosage: true,
@@ -202,7 +203,7 @@ export const products: Product[] = [
     subtitle: "Oxytocin",
     slug: "oxytocin",
     descriptor:
-      "Oxytocin — bonding and emotional connection for intimacy, trust, and closeness.",
+      "Connect contains oxytocin, a neuropeptide involved in neuroendocrine communication and behavioral research.",
     image: "/products/connect.png",
     collection: "intimacy",
     variants: [
@@ -220,7 +221,7 @@ export const products: Product[] = [
     subtitle: "PT-141",
     slug: "pt-141",
     descriptor:
-      "PT-141 — confidence and presence for connection, arousal, and intimate vitality.",
+      "Desire contains PT-141 (Bremelanotide), a melanocortin receptor agonist studied for neuroendocrine research.",
     image: "/products/desire.png",
     collection: "intimacy",
     variants: [
@@ -238,6 +239,12 @@ export const featuredProducts = products.filter((p) => p.featured);
 
 export function getProductBySlug(slug: string) {
   return products.find((p) => p.slug === slug);
+}
+
+/** 1-based position in catalog (alphabetical by display name) */
+export function getProductCatalogIndex(slug: string) {
+  const index = products.findIndex((product) => product.slug === slug);
+  return index >= 0 ? index + 1 : null;
 }
 
 export function getProductById(id: string) {

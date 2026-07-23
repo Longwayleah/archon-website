@@ -7,7 +7,9 @@ import {
   getProductDosageLabel,
   products,
 } from "@/config/products";
-import { ProductPurchasePanel } from "@/components/shop/ProductPurchasePanel";
+import { getProductContent } from "@/config/product-content";
+import { ProductDetailStack } from "@/components/shop/ProductDetailStack";
+import { ProductPageSections } from "@/components/shop/ProductPageSections";
 import { Container } from "@/components/ui/Container";
 import { ProductName, getProductLabel } from "@/components/ui/ProductName";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -34,10 +36,14 @@ export async function generateMetadata({
   }
 
   const label = getProductLabel(product);
+  const content = getProductContent(slug);
+  const description =
+    content?.lead ??
+    `${product.descriptor} Available from Archon Peptide — premium research compounds for scientific excellence.`;
 
   return createPageMetadata({
     title: `${label} | Premium Research Peptide`,
-    description: `${product.descriptor} Available from Archon Peptide — premium research compounds for scientific excellence.`,
+    description,
     path: `/shop/${product.slug}`,
     keywords: [
       product.name,
@@ -58,6 +64,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const content = getProductContent(slug);
   const dosageLabel = getProductDosageLabel(product);
   const imageAlt = getProductImageAlt(product);
 
@@ -68,7 +75,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Container size="wide">
           <Link
             href="/shop"
-            className="font-body text-xs uppercase tracking-[0.18em] text-archon-navy/50 transition-colors hover:text-archon-navy"
+            className="inline-flex min-h-11 items-center font-body text-xs uppercase tracking-[0.18em] text-archon-navy/50 transition-colors hover:text-archon-navy"
           >
             ← Back to shop
           </Link>
@@ -85,7 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
             </div>
 
-            <div>
+            <div className="min-w-0">
               <p className="font-body text-[11px] uppercase tracking-[0.28em] text-archon-navy/50">
                 Archon peptide
               </p>
@@ -102,18 +109,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {dosageLabel}
                 </p>
               ) : null}
-              <p className="mt-8 max-w-md font-body text-base leading-relaxed text-archon-black/70">
-                {product.descriptor}
-              </p>
 
-              <ProductPurchasePanel product={product} />
+              {content ? (
+                <p className="mt-6 font-body text-sm leading-[1.75] text-archon-black/70 md:text-[15px]">
+                  {content.lead}
+                </p>
+              ) : null}
 
-              <p className="mt-10 font-body text-xs leading-relaxed text-archon-muted">
-                For research use only. These statements have not been evaluated by
-                the FDA.
-              </p>
+              <ProductDetailStack product={product} />
             </div>
           </div>
+
+          {content ? <ProductPageSections content={content} /> : null}
         </Container>
       </div>
     </>

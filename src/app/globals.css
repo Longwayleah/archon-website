@@ -1027,7 +1027,11 @@ html[data-standards-placement-drag] body {
 
 .shop-collection-tabs__tab {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   padding-block: 0.125rem;
+  padding-inline: 0.25rem;
   font-family: var(--font-body), sans-serif;
   font-size: 10px;
   font-weight: 500;
@@ -1089,31 +1093,113 @@ html[data-standards-placement-drag] body {
 
 @media (max-width: 639px) {
   .shop-product-card--mobile-grid {
-    padding: 1rem;
-    border-radius: 1.25rem;
+    min-width: 0;
+    width: 100%;
+    padding: 0.875rem 0.75rem;
+    border-radius: 1.125rem;
   }
 
   .shop-product-card--mobile-grid .product-glass-card__stage {
     max-width: none;
+    padding: 0.75rem 0.5rem;
   }
 
   .shop-product-card--mobile-grid .product-glass-card__footer {
-    margin-top: 0.875rem;
-    padding-top: 0.875rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
   }
 
   .shop-product-card--mobile-grid .product-glass-card__footer > p {
     display: none;
   }
 
-  .shop-product-card--mobile-grid .product-glass-card__body > div:last-child {
-    margin-top: 0.875rem;
-    padding-top: 0.875rem;
+  .shop-product-card--mobile-grid .product-glass-card__actions {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .shop-product-card--mobile-grid .product-glass-card__price {
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    color: var(--archon-navy);
+  }
+
+  .shop-product-card--mobile-grid .product-glass-card__add {
+    min-height: 2.75rem;
+    height: 2.75rem;
+    padding-inline: 0.875rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--archon-navy);
+    border-color: rgb(11 31 58 / 0.22);
   }
 
   .shop-product-card--mobile-grid .product-glass-card__badge {
     display: none;
   }
+}
+
+/* Product page — numbered spec sheet */
+.product-spec-sheet {
+  border-top: 1px solid rgb(11 31 58 / 0.08);
+}
+
+.product-spec-sheet--embedded {
+  border-top: none;
+  padding-bottom: 0.5rem;
+}
+
+.product-spec-sheet__section {
+  border-bottom: 1px solid rgb(11 31 58 / 0.08);
+}
+
+.product-spec-sheet__summary {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 1.125rem 0;
+}
+
+.product-spec-sheet__summary::-webkit-details-marker {
+  display: none;
+}
+
+.product-spec-sheet__index {
+  min-width: 1.75rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.18em;
+  color: rgb(11 31 58 / 0.38);
+}
+
+.product-spec-sheet__title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  letter-spacing: -0.02em;
+  color: rgb(11 31 58);
+}
+
+.product-spec-sheet__chevron {
+  font-size: 0.875rem;
+  color: rgb(11 31 58 / 0.28);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.product-spec-sheet__section[open] .product-spec-sheet__chevron {
+  transform: rotate(90deg);
+  color: rgb(11 31 58 / 0.5);
+}
+
+.product-spec-sheet__body {
+  padding: 0 0 1.25rem 2.75rem;
 }
 
 /* Protocol clearance capture */

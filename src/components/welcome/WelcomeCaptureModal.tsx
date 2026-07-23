@@ -6,7 +6,9 @@ import {
   welcomeOffer,
   createClearanceId,
   hasCompletedWelcome,
+  isWelcomePromptSnoozed,
   readWelcomeEmail,
+  snoozeWelcomePrompt,
   writeWelcomeCaptureStatus,
   writeWelcomeEmail,
 } from "@/config/welcome";
@@ -17,7 +19,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 
-const OPEN_DELAY_MS = 3500;
+const OPEN_DELAY_MS = 4500;
 
 type CapturePhase = "form" | "success";
 
@@ -46,11 +48,12 @@ export function WelcomeCaptureModal() {
   const researchId = useId();
   const marketingId = useId();
 
+  /** Soft browse prompt can be dismissed; checkout gate cannot. */
+  const isCheckoutGate = welcomeForCheckout;
   const canSubmit = ageConfirmed && researchUseConfirmed && !isSubmitting;
 
   useEffect(() => {
     setMounted(true);
-    // Clear legacy "Not now" session dismissals — clearance is required.
     try {
       sessionStorage.removeItem("archon-welcome-capture-dismissed");
     } catch {
@@ -59,10 +62,13 @@ export function WelcomeCaptureModal() {
   }, []);
 
   useEffect(() => {
-    if (!splashComplete || hasCompletedWelcome()) return;
+    if (!splashComplete || hasCompletedWelcome() || isWelcomePromptSnoozed()) {
+      return;
+    }
 
     const timer = window.setTimeout(() => {
-      if (!hasCompletedWelcome()) {
+      if (!hasCompletedWelcome() && !isWelcomePromptSnoozed()) {
+        setPhase("form");
         setIsOpen(true);
       }
     }, OPEN_DELAY_MS);
@@ -90,8 +96,13 @@ export function WelcomeCaptureModal() {
     document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && phase === "success") {
+      if (event.key !== "Escape") return;
+      if (phase === "success") {
         finishSuccess();
+        return;
+      }
+      if (!isCheckoutGate) {
+        dismissSoftPrompt();
       }
     };
 
@@ -101,9 +112,17 @@ export function WelcomeCaptureModal() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-    // finishSuccess closes over latest email/phase
+    // finishSuccess / dismissSoftPrompt close over latest state
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, phase, email]);
+  }, [isOpen, phase, email, isCheckoutGate]);
+
+  const dismissSoftPrompt = () => {
+    snoozeWelcomePrompt();
+    setIsOpen(false);
+    setError(null);
+    setIsSubmitting(false);
+    clearWelcomeForCheckout();
+  };
 
   const finishSuccess = () => {
     const normalized = email.trim().toLowerCase() || readWelcomeEmail() || "";
@@ -174,12 +193,12 @@ export function WelcomeCaptureModal() {
 
   return createPortal(
     <div className="protocol-clearance-root">
-      {phase === "success" ? (
+      {phase === "success" || !isCheckoutGate ? (
         <button
           type="button"
           aria-label="Close protocol clearance"
           className="protocol-clearance-root__backdrop"
-          onClick={finishSuccess}
+          onClick={phase === "success" ? finishSuccess : dismissSoftPrompt}
         />
       ) : (
         <div
@@ -209,7 +228,9 @@ export function WelcomeCaptureModal() {
               {welcomeOffer.headline}
             </h2>
             <p className="mt-2 font-body text-sm text-archon-muted">
-              {welcomeOffer.subheadline}
+              {isCheckoutGate
+                ? "Complete clearance to continue to checkout — and unlock 10% off your first order."
+                : welcomeOffer.subheadline}
             </p>
 
             <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
@@ -310,6 +331,16 @@ export function WelcomeCaptureModal() {
               >
                 {isSubmitting ? "..." : welcomeOffer.submitLabel}
               </Button>
+
+              {!isCheckoutGate ? (
+                <button
+                  type="button"
+                  className="w-full py-2 font-body text-xs uppercase tracking-[0.18em] text-archon-navy/45 transition-colors hover:text-archon-navy"
+                  onClick={dismissSoftPrompt}
+                >
+                  {welcomeOffer.browseLabel}
+                </button>
+              ) : null}
             </form>
           </>
         ) : (
@@ -327,7 +358,7 @@ export function WelcomeCaptureModal() {
               className="mt-6 w-full rounded-full bg-archon-navy text-white hover:bg-archon-navy-light"
               onClick={finishSuccess}
             >
-              {welcomeForCheckout ? "Continue to checkout" : "Continue"}
+              {isCheckoutGate ? "Continue to checkout" : "Continue"}
             </Button>
           </>
         )}

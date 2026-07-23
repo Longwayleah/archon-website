@@ -171,10 +171,12 @@ async function syncToSuperBot({
   researchUseConfirmed,
   marketingOptIn,
 }: WelcomeSignupPayload) {
-  const superbotUrl = process.env.ARCHON_SUPERBOT_URL;
-  const secret = process.env.WELCOME_FORM_SECRET;
+  const superbotUrl = process.env.ARCHON_SUPERBOT_URL?.trim();
+  const secret = process.env.WELCOME_FORM_SECRET?.trim();
 
-  if (!superbotUrl) return;
+  if (!superbotUrl) {
+    throw new Error("ARCHON_SUPERBOT_URL is not configured");
+  }
 
   const response = await fetch(`${superbotUrl.replace(/\/$/, "")}/api/welcome`, {
     method: "POST",
@@ -198,13 +200,21 @@ async function syncToSuperBot({
 
   if (!response.ok) {
     const body = await response.text();
-    console.error("[welcome-signup] Super Bot sync failed:", response.status, body);
+    throw new Error(`Super Bot sync failed (${response.status}): ${body}`);
   }
 }
 
 export async function handleWelcomeSignup(payload: WelcomeSignupPayload) {
-  await notifyWelcomeSignup(payload);
+  // CRM sync first — never let Resend failure drop the lead in Nova.
   await syncToSuperBot(payload);
+  try {
+    await notifyWelcomeSignup(payload);
+  } catch (error) {
+    console.error(
+      "[welcome-signup] Email notify failed after Superbot sync:",
+      error,
+    );
+  }
 }
 
 function escapeHtml(value: string) {

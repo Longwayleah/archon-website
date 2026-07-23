@@ -7,6 +7,7 @@ export const welcomeOffer = {
   headline: "Protocol Clearance",
   subheadline: "10% off your first order.",
   submitLabel: "Continue",
+  browseLabel: "Browse first",
   ageAttestation: "I am 21 or older.",
   researchAttestation:
     "For research and laboratory use only — not for human consumption.",
@@ -21,8 +22,13 @@ export const welcomeOffer = {
 
 export const welcomeCaptureStorageKey = "archon-welcome-capture";
 export const welcomeEmailStorageKey = "archon-welcome-email";
-/** @deprecated Kept so we can clear old "Not now" dismissals when making clearance required. */
+/** Soft-dismiss snooze for the browse prompt (not checkout). */
+export const welcomeCaptureSnoozeKey = "archon-welcome-capture-snooze";
+/** @deprecated Legacy session dismiss key — cleared on mount. */
 export const welcomeCaptureSessionKey = "archon-welcome-capture-dismissed";
+
+/** How long “Browse first” hides the soft prompt. Checkout still requires clearance. */
+export const WELCOME_SNOOZE_MS = 1000 * 60 * 60 * 24 * 30; // 30 days
 
 export type WelcomeCaptureStatus = "signed-up";
 
@@ -61,6 +67,27 @@ export function hasCompletedWelcome(): boolean {
 export function writeWelcomeCaptureStatus(_status: WelcomeCaptureStatus) {
   localStorage.setItem(welcomeCaptureStorageKey, "signed-up");
   sessionStorage.removeItem(welcomeCaptureSessionKey);
+  localStorage.removeItem(welcomeCaptureSnoozeKey);
+}
+
+export function isWelcomePromptSnoozed(): boolean {
+  if (typeof window === "undefined") return false;
+  const raw = localStorage.getItem(welcomeCaptureSnoozeKey);
+  if (!raw) return false;
+  const until = Number(raw);
+  if (!Number.isFinite(until)) return false;
+  if (Date.now() >= until) {
+    localStorage.removeItem(welcomeCaptureSnoozeKey);
+    return false;
+  }
+  return true;
+}
+
+export function snoozeWelcomePrompt(durationMs = WELCOME_SNOOZE_MS) {
+  localStorage.setItem(
+    welcomeCaptureSnoozeKey,
+    String(Date.now() + durationMs),
+  );
 }
 
 export function createClearanceId() {

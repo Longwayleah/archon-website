@@ -171,7 +171,7 @@ export function CartDrawer() {
                             <button
                               type="button"
                               aria-label="Decrease quantity"
-                              className="flex h-8 w-8 items-center justify-center text-archon-navy"
+                              className="flex h-11 w-11 items-center justify-center text-archon-navy"
                               onClick={() =>
                                 setQuantity(
                                   line.productId,
@@ -188,7 +188,7 @@ export function CartDrawer() {
                             <button
                               type="button"
                               aria-label="Increase quantity"
-                              className="flex h-8 w-8 items-center justify-center text-archon-navy"
+                              className="flex h-11 w-11 items-center justify-center text-archon-navy"
                               onClick={() =>
                                 setQuantity(
                                   line.productId,
@@ -203,7 +203,7 @@ export function CartDrawer() {
 
                           <button
                             type="button"
-                            className="font-body text-[11px] uppercase tracking-[0.16em] text-archon-muted transition-colors hover:text-archon-navy"
+                            className="inline-flex min-h-11 items-center px-2 font-body text-[11px] uppercase tracking-[0.16em] text-archon-muted transition-colors hover:text-archon-navy"
                             onClick={() =>
                               removeItem(line.productId, line.variantId)
                             }
