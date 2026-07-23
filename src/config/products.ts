@@ -58,7 +58,7 @@ export const products: Product[] = [
       {
         id: "20mg",
         dosage: "20 mg",
-        price: 260,
+        price: 249.99,
         squareCheckoutUrl: "https://square.link/u/alNFWySM",
       },
     ],
@@ -96,7 +96,7 @@ export const products: Product[] = [
       {
         id: "10mg",
         dosage: "10 mg",
-        price: 55,
+        price: 54.99,
         squareCheckoutUrl: "https://square.link/u/TLISwPif",
       },
     ],
@@ -152,7 +152,7 @@ export const products: Product[] = [
       {
         id: "20mg",
         dosage: "20 mg",
-        price: 150,
+        price: 134.99,
         squareCheckoutUrl: "https://square.link/u/f2m4noOj",
       },
     ],
@@ -171,7 +171,7 @@ export const products: Product[] = [
       {
         id: "500mg",
         dosage: "500 mg",
-        price: 110,
+        price: 109.99,
         squareCheckoutUrl: "https://square.link/u/yOaKjQCw",
       },
     ],
@@ -191,7 +191,7 @@ export const products: Product[] = [
       {
         id: "default",
         dosage: "",
-        price: 129,
+        price: 129.99,
         squareCheckoutUrl: "https://square.link/u/OMyISGxO",
       },
     ],
@@ -209,7 +209,7 @@ export const products: Product[] = [
       {
         id: "10mg",
         dosage: "10 mg",
-        price: 72,
+        price: 71.99,
         squareCheckoutUrl: "https://square.link/u/JyAIJ2g4",
       },
     ],
@@ -227,7 +227,7 @@ export const products: Product[] = [
       {
         id: "10mg",
         dosage: "10 mg",
-        price: 80,
+        price: 79.99,
         squareCheckoutUrl: "https://square.link/u/ZVbtK3uv",
       },
     ],
