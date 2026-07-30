@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils/cn";
 type ProtocolClearanceCertificateProps = {
   firstName: string;
   email: string;
+  phone: string;
   clearanceId: string;
   copied: boolean;
   onCopy: () => void;
@@ -15,6 +16,7 @@ type ProtocolClearanceCertificateProps = {
 export function ProtocolClearanceCertificate({
   firstName,
   email,
+  phone,
   clearanceId,
   copied,
   onCopy,
@@ -68,6 +70,10 @@ export function ProtocolClearanceCertificate({
         <div>
           <dt>Email</dt>
           <dd className="truncate">{email}</dd>
+        </div>
+        <div>
+          <dt>Phone</dt>
+          <dd className="truncate">{phone}</dd>
         </div>
         <div>
           <dt>Benefit</dt>

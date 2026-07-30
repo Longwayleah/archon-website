@@ -12,7 +12,7 @@ export const welcomeOffer = {
   researchAttestation:
     "For research and laboratory use only — not for human consumption.",
   marketingOptInAttestation:
-    "I'd like to receive emails about new products, offers, and updates.",
+    "I'd like to receive emails and texts about new products, offers, and updates.",
   certificateTitle: "Protocol Clearance",
   certificateSubtitle: "Access issued",
   certificateStatus: "Verified",

@@ -35,6 +35,7 @@ export function WelcomeCaptureModal() {
   const [phase, setPhase] = useState<CapturePhase>("form");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [researchUseConfirmed, setResearchUseConfirmed] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
@@ -44,6 +45,7 @@ export function WelcomeCaptureModal() {
   const [clearanceId, setClearanceId] = useState("");
   const firstNameId = useId();
   const emailId = useId();
+  const phoneId = useId();
   const ageId = useId();
   const researchId = useId();
   const marketingId = useId();
@@ -154,6 +156,7 @@ export function WelcomeCaptureModal() {
         body: JSON.stringify({
           name: firstName,
           email,
+          phone,
           ageConfirmed,
           researchUseConfirmed,
           marketingOptIn,
@@ -268,6 +271,24 @@ export function WelcomeCaptureModal() {
                     placeholder="you@email.com"
                   />
                 </div>
+
+                <div>
+                  <label htmlFor={phoneId} className="sr-only">
+                    Phone number
+                  </label>
+                  <input
+                    id={phoneId}
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    required
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                    className="protocol-clearance-root__input"
+                    placeholder="Phone number"
+                  />
+                </div>
               </div>
 
               <fieldset className="space-y-2.5 border-0 p-0">
@@ -348,6 +369,7 @@ export function WelcomeCaptureModal() {
             <ProtocolClearanceCertificate
               firstName={firstName.trim()}
               email={email.trim().toLowerCase()}
+              phone={phone.trim()}
               clearanceId={clearanceId}
               copied={copied}
               onCopy={copyCode}

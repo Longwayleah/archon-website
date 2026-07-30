@@ -3,6 +3,7 @@ import { welcomeOffer } from "@/config/welcome";
 export type WelcomeSignupPayload = {
   name: string;
   email: string;
+  phone: string;
   ageConfirmed: boolean;
   researchUseConfirmed: boolean;
   marketingOptIn: boolean;
@@ -14,14 +15,21 @@ export type WelcomeSignupResult =
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Digits only — US numbers must have at least 10. */
+export function normalizePhone(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
 export function validateWelcomeSignup({
   name,
   email,
+  phone,
   ageConfirmed,
   researchUseConfirmed,
 }: WelcomeSignupPayload): WelcomeSignupResult {
   const trimmedName = name.trim();
   const trimmedEmail = email.trim().toLowerCase();
+  const digits = normalizePhone(phone);
 
   if (!ageConfirmed) {
     return { ok: false, error: "Please confirm you are 21 years of age or older." };
@@ -40,6 +48,10 @@ export function validateWelcomeSignup({
 
   if (!EMAIL_PATTERN.test(trimmedEmail)) {
     return { ok: false, error: "Please enter a valid email address." };
+  }
+
+  if (digits.length < 10 || digits.length > 15) {
+    return { ok: false, error: "Please enter a valid phone number." };
   }
 
   return { ok: true };
@@ -129,6 +141,7 @@ export async function sendCustomerWelcomeEmail({
 export async function notifyWelcomeSignup({
   name,
   email,
+  phone,
   ageConfirmed,
   researchUseConfirmed,
   marketingOptIn,
@@ -140,7 +153,7 @@ export async function notifyWelcomeSignup({
   if (!apiKey) {
     console.warn(
       "[welcome-signup] RESEND_API_KEY is not set — signup recorded without email notification.",
-      { name, email },
+      { name, email, phone },
     );
     return;
   }
@@ -155,6 +168,7 @@ export async function notifyWelcomeSignup({
       <h2>New Archon protocol clearance request</h2>
       <p><strong>Full name:</strong> ${escapeHtml(name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
       <p><strong>Age 21+ confirmed:</strong> ${ageConfirmed ? "Yes" : "No"}</p>
       <p><strong>Research use acknowledged:</strong> ${researchUseConfirmed ? "Yes" : "No"}</p>
       <p><strong>Marketing emails opted in:</strong> ${marketingOptIn ? "Yes" : "No"}</p>
@@ -167,6 +181,7 @@ export async function notifyWelcomeSignup({
 async function syncToSuperBot({
   name,
   email,
+  phone,
   ageConfirmed,
   researchUseConfirmed,
   marketingOptIn,
@@ -184,6 +199,7 @@ async function syncToSuperBot({
     body: JSON.stringify({
       full_name: name,
       email,
+      phone,
       secret,
       skip_email: true,
       welcome_code: welcomeOffer.codeLabel,
@@ -194,6 +210,7 @@ async function syncToSuperBot({
         research_use_confirmed: researchUseConfirmed,
         marketing_opt_in: marketingOptIn,
         discount_code: welcomeOffer.codeLabel,
+        phone,
       },
     }),
   });
