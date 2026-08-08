@@ -39,7 +39,7 @@ export const products: Product[] = [
       {
         id: "20mg",
         dosage: "20 mg",
-        price: 199.99,
+        price: 65.99,
         squareCheckoutUrl: "https://square.link/u/qE05McHD",
       },
     ],
@@ -58,7 +58,7 @@ export const products: Product[] = [
       {
         id: "20mg",
         dosage: "20 mg",
-        price: 249.99,
+        price: 80.99,
         squareCheckoutUrl: "https://square.link/u/alNFWySM",
       },
     ],
@@ -192,7 +192,7 @@ export const products: Product[] = [
       {
         id: "default",
         dosage: "",
-        price: 129.99,
+        price: 70.99,
         squareCheckoutUrl: "https://square.link/u/OMyISGxO",
       },
     ],
