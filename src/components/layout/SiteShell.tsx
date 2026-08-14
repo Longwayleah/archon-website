@@ -1,5 +1,4 @@
 import { CartDrawer } from "@/components/shop/CartDrawer";
-import { ThankYouPromoModal } from "@/components/promo/ThankYouPromoModal";
 import { WelcomeCaptureModal } from "@/components/welcome/WelcomeCaptureModal";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
@@ -15,7 +14,6 @@ export function SiteShell({ children }: SiteShellProps) {
       <main className="flex-1">{children}</main>
       <CartDrawer />
       <WelcomeCaptureModal />
-      <ThankYouPromoModal />
       <Footer />
     </>
   );
