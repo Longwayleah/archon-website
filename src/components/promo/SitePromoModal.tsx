@@ -13,8 +13,8 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 
-const OPEN_DELAY_MS = 9000;
-const RETRY_MS = 2500;
+const OPEN_DELAY_MS = 2000;
+const RETRY_MS = 1500;
 
 export function SitePromoModal() {
   const splashComplete = useAppStore((state) => state.splashComplete);
