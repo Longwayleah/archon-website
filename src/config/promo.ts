@@ -1,18 +1,20 @@
-/** Site-wide promo (must match Square discount code) */
+/** Site promo (must match Square discount code) */
 export const sitePromo = {
-  code: "archon50",
-  codeLabel: "ARCHON50",
-  discountPercent: 50,
-  eyebrow: "Sitewide offer",
-  headline: "50% off",
-  subheadline: "Use code ARCHON50 at checkout — valid on your entire order.",
+  code: "archon15",
+  codeLabel: "ARCHON15",
+  discountPercent: 15,
+  eyebrow: "Limited offer",
+  headline: "15% off Apex",
+  subheadline:
+    "Use code ARCHON15 at checkout — valid on Apex (Retatrutide) only.",
   note: "Apply at checkout.",
   dismissLabel: "Not now",
-  copyLabel: "Copy ARCHON50",
+  copyLabel: "Copy ARCHON15",
   copiedLabel: "Copied",
 } as const;
 
-export const sitePromoSnoozeKey = "archon-archon50-snooze";
+/** New key so prior ARCHON50 dismissals don't hide this offer */
+export const sitePromoSnoozeKey = "archon-archon15-snooze";
 
 /** How long dismissing hides the promo */
 export const SITE_PROMO_SNOOZE_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
